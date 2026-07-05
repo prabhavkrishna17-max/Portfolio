@@ -11,21 +11,25 @@ const caseStudies = [
     id: "weatherbuddy",
     title: "WeatherBuddy",
     event: "NASA Space Apps Challenge",
+    role: "Lead Frontend Engineer",
     overview: "A high-impact meteorological dashboard developed under intense time constraints to turn complex weather data into an accessible, practical interface.",
     contribution: "Designed and engineered a streamlined dashboard that aggregates complex APIs into a single, intuitive view with immediate visual feedback for weather anomalies.",
+    impact: "Built MVP in 48 hours. Praised for clean UI and responsive design during the challenge.",
     stack: "React, OpenWeather API, Framer Motion, Tailwind CSS",
-    certificateLink: "/assets/certificates/TECHNOVIBE_2k26.jpg", // Assuming an existing certificate here or omitting
-    readMoreLink: "https://github.com/prabhavkrishna", 
+    certificateLink: "/images/certificates/TECHNOVIBE_2k26.webp", // Assuming an existing certificate here or omitting
+    readMoreLink: "https://github.com/prabhavkrishna17-max", 
   },
   {
     id: "shopping-assistant",
     title: "Shopping Assistant",
     event: "Oblivion '25 Hackathon",
+    role: "Full-Stack Developer",
     overview: "An intelligent consumer application engineered to optimize the digital shopping experience by providing smart product comparisons and tracking.",
     contribution: "Built a centralized comparison engine that stores session data locally, allowing users to build a matrix of products with automated pros/cons highlighting.",
+    impact: "Created a scalable state architecture capable of handling multi-variant product comparisons.",
     stack: "Next.js, TypeScript, LocalStorage API, Zustand",
-    certificateLink: "/assets/certificates/Oblivion25.jpg",
-    readMoreLink: "https://github.com/prabhavkrishna",
+    certificateLink: "/images/certificates/Oblivion25.webp",
+    readMoreLink: "https://github.com/prabhavkrishna17-max",
   }
 ];
 
@@ -102,7 +106,7 @@ export function Projects() {
                 >
                   <div className="relative w-full h-full rounded-xl overflow-hidden">
                     <Image
-                      src="/assets/artist-color-lab/Artist_Color_Lab.png"
+                      src="/images/projects/Artist_Color_Lab.webp"
                       alt="Artist Color Lab Main Interface"
                       fill
                       sizes="(max-width: 1024px) 100vw, 60vw"
@@ -120,7 +124,7 @@ export function Projects() {
                 >
                   <div className="relative w-full h-full rounded-xl overflow-hidden">
                     <Image
-                      src="/assets/artist-color-lab/Artist_Color_Lab_Mixer.png"
+                      src="/images/projects/Artist_Color_Lab_Mixer.webp"
                       alt="Artist Color Lab Mixer Tool"
                       fill
                       sizes="(max-width: 1024px) 100vw, 60vw"
@@ -188,13 +192,23 @@ export function Projects() {
                             <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Project Overview</strong>
                             <p className="text-muted/90 font-sans leading-relaxed">{study.overview}</p>
                           </div>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                              <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Role</strong>
+                              <p className="text-muted/90 font-sans leading-relaxed">{study.role}</p>
+                            </div>
+                            <div>
+                              <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Tech Stack</strong>
+                              <p className="text-muted/90 font-sans leading-relaxed">{study.stack}</p>
+                            </div>
+                          </div>
                           <div>
                             <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Contribution</strong>
                             <p className="text-muted/90 font-sans leading-relaxed">{study.contribution}</p>
                           </div>
                           <div>
-                            <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Tech Stack</strong>
-                            <p className="text-muted/90 font-sans leading-relaxed">{study.stack}</p>
+                            <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Impact</strong>
+                            <p className="text-muted/90 font-sans leading-relaxed">{study.impact}</p>
                           </div>
                           <div className="flex flex-wrap gap-4 pt-4 border-t border-white/10">
                             <a 

@@ -6,6 +6,9 @@ import { CustomCursor } from "@/components/ui/CustomCursor";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getBaseUrl } from "@/lib/utils";
+import { Toaster } from "sonner";
+import { CommandPalette } from "@/components/ui/CommandPalette";
+import { ScrollProgress } from "@/components/ui/ScrollProgress";
 
 export const metadata: Metadata = {
   title: "Prabhav Krishna R | Software Engineer",
@@ -61,16 +64,19 @@ export default function RootLayout({
               url: getBaseUrl(),
               jobTitle: "Software Engineer",
               sameAs: [
-                "https://github.com/prabhavkrishna",
+                "https://github.com/prabhavkrishna17-max",
                 "https://www.linkedin.com/in/prabhav-krishna"
               ]
             })
           }}
         />
       </head>
-      <body className="min-h-screen bg-background text-foreground font-sans selection:bg-white selection:text-black">
+      <body className="min-h-screen bg-background text-foreground font-sans selection:bg-white selection:text-black overflow-x-hidden">
+        <ScrollProgress />
+        <CommandPalette />
         <CustomCursor />
         {children}
+        <Toaster position="bottom-right" theme="dark" />
         <Analytics />
         <SpeedInsights />
       </body>

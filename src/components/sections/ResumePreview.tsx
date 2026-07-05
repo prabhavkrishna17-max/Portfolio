@@ -18,7 +18,7 @@ export default function ResumePreview() {
 
   return (
     <Document
-      file="/assets/Prabhav_Krishna_Resume.pdf"
+      file="/Prabhav_Krishna_Resume.pdf"
       loading={
         <div className="flex items-center justify-center h-full w-full">
           <span className="text-white/50 text-sm font-medium animate-pulse">Loading Resume...</span>

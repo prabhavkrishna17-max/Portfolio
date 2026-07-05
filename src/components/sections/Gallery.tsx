@@ -6,22 +6,22 @@ import { cn } from "@/lib/utils";
 
 const galleryItems = [
   {
-    src: "/assets/internship/office-photo.jpg",
+    src: "/images/internships/office-photo.webp",
     alt: "Office Workspace",
     className: "col-span-12 md:col-span-8 aspect-[16/9]"
   },
   {
-    src: "/assets/internship/Circuit.jpg",
+    src: "/images/internships/Circuit.webp",
     alt: "Hardware Prototyping",
     className: "col-span-12 md:col-span-4 aspect-square md:aspect-[3/4]"
   },
   {
-    src: "/assets/certificates/TECHNOVIBE_2k26.jpg",
+    src: "/images/certificates/TECHNOVIBE_2k26.webp",
     alt: "Technovibe Hackathon",
     className: "col-span-12 md:col-span-4 aspect-square md:aspect-[3/4]"
   },
   {
-    src: "/assets/certificates/Oblivion25.jpg",
+    src: "/images/certificates/Oblivion25.webp",
     alt: "Oblivion '25 Hackathon",
     className: "col-span-12 md:col-span-8 aspect-[16/9]"
   }

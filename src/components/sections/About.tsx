@@ -29,15 +29,15 @@ export function About() {
             className="lg:col-span-7"
           >
             <h3 className="text-2xl md:text-3xl lg:text-4xl font-heading font-medium tracking-tight leading-[1.3] text-foreground mb-8">
-              I&apos;m a second-year Computer Science student who cares deeply about the intersection of engineering and design.
+              I am a Full-Stack Developer and UI/UX Designer specializing in building modern, high-performance web applications.
             </h3>
             
             <div className="space-y-6 text-lg text-muted/90 font-sans leading-relaxed">
               <p>
-                I don&apos;t pretend to know everything, but I am building my skills every single day. I prefer modern minimalism over flashy effects, and I care deeply about the details — spending hours polishing UI to ensure clean motion and a premium feel.
+                Currently pursuing a B.E. in Computer Science and Engineering at SNS College of Technology, my focus lies at the intersection of robust backend architecture and intuitive frontend design. I believe in calm, intentional interfaces that solve complex problems without sacrificing user experience.
               </p>
               <p>
-                My philosophy is calm, intentional, and focused on quality. Every project I build is an attempt to create an interface that people actually enjoy using.
+                From architecting data-driven dashboards for the NASA Space Apps Challenge to prototyping interfaces in Figma and FlutterFlow, my approach is grounded in continuous iteration. I combine modern frameworks with a deep appreciation for design thinking to deliver production-ready software.
               </p>
             </div>
           </motion.div>
@@ -79,24 +79,36 @@ export function About() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-8">
-              {/* Languages */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+              {/* Core Stack */}
               <div>
+                <h4 className="text-xs font-mono text-muted uppercase tracking-[0.1em] mb-4">Core Stack</h4>
+                <div className="space-y-1 font-sans text-foreground">
+                  <p>Next.js & React</p>
+                  <p>TypeScript</p>
+                  <p>Python</p>
+                  <p>HTML / CSS</p>
+                </div>
+              </div>
+
+              {/* Design & Tools */}
+              <div>
+                <h4 className="text-xs font-mono text-muted uppercase tracking-[0.1em] mb-4">Design & Tools</h4>
+                <div className="space-y-1 font-sans text-foreground">
+                  <p>Figma & UI/UX</p>
+                  <p>FlutterFlow</p>
+                  <p>Canva</p>
+                  <p>GitHub</p>
+                </div>
+              </div>
+
+              {/* Languages */}
+              <div className="col-span-2 md:col-span-1">
                 <h4 className="text-xs font-mono text-muted uppercase tracking-[0.1em] mb-4">Languages</h4>
                 <div className="space-y-1 font-sans text-foreground">
                   <p>English</p>
                   <p>Tamil</p>
-                  <p>Hindi</p>
                   <p>Malayalam</p>
-                </div>
-              </div>
-
-              {/* Hobbies */}
-              <div>
-                <h4 className="text-xs font-mono text-muted uppercase tracking-[0.1em] mb-4">Hobbies</h4>
-                <div className="space-y-1 font-sans text-foreground">
-                  <p>Chess</p>
-                  <p>Motorcycles</p>
                 </div>
               </div>
             </div>

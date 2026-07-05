@@ -63,7 +63,7 @@ export function Experience() {
               </div>
 
               <a 
-                href="/assets/internship/Internship_Report_Prabhav.pdf" 
+                href="/internships/Internship_Report_Prabhav.pdf" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center text-sm font-medium uppercase tracking-[0.15em] text-white hover:text-accent transition-colors group"
@@ -78,7 +78,7 @@ export function Experience() {
               <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden glass p-1">
                 <div className="relative w-full h-full rounded-xl overflow-hidden">
                   <Image 
-                    src="/assets/internship/ARK_Offer_Letter.jpg" 
+                    src="/images/internships/ARK_Offer_Letter.webp"
                     alt="Offer Letter" 
                     fill 
                     sizes="(max-width: 1024px) 50vw, 25vw"
@@ -89,7 +89,7 @@ export function Experience() {
               <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden glass p-1 translate-y-8">
                 <div className="relative w-full h-full rounded-xl overflow-hidden">
                   <Image 
-                    src="/assets/internship/Circuit.jpg" 
+                    src="/images/internships/Circuit.webp"
                     alt="Internship Environment" 
                     fill 
                     sizes="(max-width: 1024px) 50vw, 25vw"
