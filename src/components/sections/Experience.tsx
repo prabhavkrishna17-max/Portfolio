@@ -29,44 +29,41 @@ export function Experience() {
             
             {/* Editorial Copy */}
             <div>
-              <p className="text-xs md:text-sm font-mono text-muted uppercase tracking-[0.2em] mb-6">
-                Internship
+              <p className="text-xs md:text-sm font-mono text-muted uppercase tracking-[0.2em] mb-6 flex items-center justify-between">
+                <span>Arkensys Realtors</span>
+                <span>Sep 2024 – Nov 2024</span>
               </p>
               <h3 className="text-2xl md:text-4xl font-heading font-medium text-white mb-2 leading-[1.2]">
                 Software Developer Intern
               </h3>
-              <p className="text-lg text-foreground/80 mb-10 font-sans">
-                Arkensys Realtors
-              </p>
+              
+              <div className="mt-8 space-y-6 text-sm md:text-base font-sans text-muted/90">
+                <div>
+                  <strong className="text-white font-medium block mb-1 uppercase tracking-wider font-mono text-xs">What I Actually Did</strong>
+                  <p>Worked on real software projects using AI-assisted development tools like Claude, ChatGPT, and Gemini. Rather than writing thousands of lines from scratch, I used AI to accelerate development while I focused on understanding the logic and architecture.</p>
+                </div>
+                
+                <div>
+                  <strong className="text-white font-medium block mb-1 uppercase tracking-wider font-mono text-xs">My Contribution</strong>
+                  <p>The AI generated the heavy lifting of the code; my job was to understand it, debug it, modify it to fit the company&apos;s business logic, and integrate it into a cohesive, deployed product.</p>
+                </div>
 
-              <div className="space-y-3 font-sans text-foreground mb-12">
-                <p className="flex items-center space-x-3">
-                  <span className="w-1 h-1 rounded-full bg-white/40" />
-                  <span>Frontend Architecture</span>
-                </p>
-                <p className="flex items-center space-x-3">
-                  <span className="w-1 h-1 rounded-full bg-white/40" />
-                  <span>Interactive SVGs</span>
-                </p>
-                <p className="flex items-center space-x-3">
-                  <span className="w-1 h-1 rounded-full bg-white/40" />
-                  <span>Complex Event Listeners</span>
-                </p>
-                <p className="flex items-center space-x-3">
-                  <span className="w-1 h-1 rounded-full bg-white/40" />
-                  <span>Interactive Property Mapping</span>
-                </p>
-                <p className="flex items-center space-x-3">
-                  <span className="w-1 h-1 rounded-full bg-white/40" />
-                  <span>UI/UX Improvements</span>
-                </p>
+                <div>
+                  <strong className="text-white font-medium block mb-1 uppercase tracking-wider font-mono text-xs">Hands-on Exposure</strong>
+                  <p>Gained practical exposure to Cloudflare Pages deployment, managing Supabase Authentication, responsive UI design, basic database structures, and modern Git workflows.</p>
+                </div>
+
+                <div>
+                  <strong className="text-white font-medium block mb-1 uppercase tracking-wider font-mono text-xs">Technologies Encountered</strong>
+                  <p>React, Next.js, Supabase, Tailwind CSS, Cloudflare</p>
+                </div>
               </div>
 
               <a 
                 href="/internships/Internship_Report_Prabhav.pdf" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="inline-flex items-center text-sm font-medium uppercase tracking-[0.15em] text-white hover:text-accent transition-colors group"
+                className="inline-flex items-center text-sm font-medium uppercase tracking-[0.15em] text-white hover:text-accent transition-colors group mt-10"
               >
                 <span>View Full Report</span>
                 <span className="ml-3 w-8 h-px bg-white/30 group-hover:bg-accent group-hover:w-12 transition-all duration-300" />

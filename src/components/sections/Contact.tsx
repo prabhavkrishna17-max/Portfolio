@@ -263,6 +263,7 @@ export function Contact() {
                       exit={{ opacity: 0, filter: 'blur(4px)' }}
                       transition={{ duration: 0.4 }}
                       className="space-y-6"
+                      aria-live="polite"
                     >
                       {/* Honeypot */}
                       <input type="text" name="botcheck" className="hidden" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
@@ -281,6 +282,8 @@ export function Contact() {
                             onBlur={() => setActiveField(null)}
                             className="w-full px-5 pt-8 pb-3 bg-white/5 border border-white/10 rounded-2xl text-white outline-none focus:border-accent/50 focus:bg-white/10 transition-all duration-300 peer"
                             placeholder="John Doe"
+                            aria-invalid={status === 'error'}
+                            aria-describedby={status === 'error' ? 'form-error' : undefined}
                           />
                         </div>
 
@@ -297,6 +300,8 @@ export function Contact() {
                             onBlur={() => setActiveField(null)}
                             className="w-full px-5 pt-8 pb-3 bg-white/5 border border-white/10 rounded-2xl text-white outline-none focus:border-accent/50 focus:bg-white/10 transition-all duration-300 peer"
                             placeholder="john@company.com"
+                            aria-invalid={status === 'error'}
+                            aria-describedby={status === 'error' ? 'form-error' : undefined}
                           />
                         </div>
                       </div>
@@ -315,6 +320,8 @@ export function Contact() {
                             onBlur={() => setActiveField(null)}
                             className="w-full px-5 pt-8 pb-3 bg-white/5 border border-white/10 rounded-2xl text-white outline-none focus:border-accent/50 focus:bg-white/10 transition-all duration-300 peer"
                             placeholder="Internship Opportunity"
+                            aria-invalid={status === 'error'}
+                            aria-describedby={status === 'error' ? 'form-error' : undefined}
                           />
                         </div>
                       </div>
@@ -332,6 +339,8 @@ export function Contact() {
                           onBlur={() => setActiveField(null)}
                           className="w-full px-5 pt-8 pb-3 bg-white/5 border border-white/10 rounded-2xl text-white outline-none focus:border-accent/50 focus:bg-white/10 transition-all duration-300 resize-none peer"
                           placeholder="Hi Prabhav, I'd like to discuss..."
+                          aria-invalid={status === 'error'}
+                          aria-describedby={status === 'error' ? 'form-error' : undefined}
                         />
                       </div>
 
@@ -339,6 +348,8 @@ export function Contact() {
                       <AnimatePresence>
                         {status === 'error' && (
                           <motion.div 
+                            id="form-error"
+                            role="alert"
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}

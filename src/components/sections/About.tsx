@@ -29,15 +29,18 @@ export function About() {
             className="lg:col-span-7"
           >
             <h3 className="text-2xl md:text-3xl lg:text-4xl font-heading font-medium tracking-tight leading-[1.3] text-foreground mb-8">
-              I am a Full-Stack Developer and UI/UX Designer specializing in building modern, high-performance web applications.
+              I am a curious developer and Computer Science student learning to build useful software.
             </h3>
             
             <div className="space-y-6 text-lg text-muted/90 font-sans leading-relaxed">
               <p>
-                Currently pursuing a B.E. in Computer Science and Engineering at SNS College of Technology, my focus lies at the intersection of robust backend architecture and intuitive frontend design. I believe in calm, intentional interfaces that solve complex problems without sacrificing user experience.
+                Currently in my second year at SNS College of Technology, my focus is on practical problem-solving. I am deeply interested in modern web development and UI/UX design, and I learn best by building real-world projects rather than just reading documentation.
               </p>
               <p>
-                From architecting data-driven dashboards for the NASA Space Apps Challenge to prototyping interfaces in Figma and FlutterFlow, my approach is grounded in continuous iteration. I combine modern frameworks with a deep appreciation for design thinking to deliver production-ready software.
+                I am a strong advocate for AI-assisted development. I actively use tools like Claude, ChatGPT, and Gemini to generate code, which accelerates my ability to prototype ideas. My actual work lies in understanding that code, testing it, modifying the business logic, and deploying it to production.
+              </p>
+              <p>
+                I don't claim to know everything yet, but I learn incredibly fast. My goal is to continually improve my understanding of systems architecture, ask the right questions, and eventually contribute to products that genuinely impact how people work and live.
               </p>
             </div>
           </motion.div>

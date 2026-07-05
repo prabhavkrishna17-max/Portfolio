@@ -11,24 +11,28 @@ import { CommandPalette } from "@/components/ui/CommandPalette";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 
 export const metadata: Metadata = {
-  title: "Prabhav Krishna R | Software Engineer",
-  description: "Portfolio of Prabhav Krishna R, Software Engineer & Product Designer",
-  keywords: ["Prabhav Krishna R", "Software Engineer", "Product Designer", "Portfolio", "Next.js", "React", "Frontend Developer", "Backend Developer"],
+  title: "Prabhav Krishna R | Student & Developer",
+  description: "Portfolio of Prabhav Krishna R, a Computer Science student learning modern web development through hands-on projects and AI-assisted workflows.",
+  keywords: ["Prabhav Krishna R", "Student", "Developer", "Next.js", "React", "Portfolio", "India", "Computer Science"],
+  authors: [{ name: "Prabhav Krishna R", url: "https://github.com/prabhavkrishna17-max" }],
+  creator: "Prabhav Krishna R",
   alternates: {
     canonical: getBaseUrl(),
   },
   metadataBase: new URL(getBaseUrl()),
   openGraph: {
-    title: 'Prabhav Krishna R | Software Engineer',
-    description: 'Portfolio of Prabhav Krishna R, Software Engineer & Product Designer',
+    title: 'Prabhav Krishna R | Student & Developer',
+    description: 'Portfolio of Prabhav Krishna R, a Computer Science student learning modern web development through hands-on projects and AI-assisted workflows.',
     url: getBaseUrl(),
-    siteName: 'Prabhav Krishna R',
+    siteName: 'Prabhav Krishna R Portfolio',
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
-    title: 'Prabhav Krishna R',
+    title: 'Prabhav Krishna R | Student & Developer',
+    description: 'Portfolio of Prabhav Krishna R, a Computer Science student learning modern web development.',
     card: 'summary_large_image',
+    creator: '@prabhavkrishna',
   },
   robots: {
     index: true,

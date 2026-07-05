@@ -44,12 +44,7 @@ export function Hero() {
 
   const opacityFade = useTransform(smoothScroll, [0, 600], [1, 0]);
 
-  // Light sweep animation for name
-  const [nameSweepComplete, setNameSweepComplete] = useState(false);
-  useEffect(() => {
-    const timer = setTimeout(() => setNameSweepComplete(true), 2200);
-    return () => clearTimeout(timer);
-  }, []);
+
 
   const handleMouseMove = (e: React.MouseEvent) => {
     const x = (e.clientX / window.innerWidth) - 0.5;
@@ -116,8 +111,8 @@ export function Hero() {
       {/* ===== MAIN CONTENT ===== */}
       <div className="w-full max-w-[1280px] mx-auto px-6 md:px-12 lg:px-16 xl:px-20 relative z-20 h-full flex flex-col justify-center">
 
-        {/* Hero Grid — balanced two-column on desktop, stacked on mobile */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-4 sm:gap-6 lg:gap-12 xl:gap-16 pt-16 pb-6 lg:py-0">
+        {/* Hero Grid — perfectly balanced on desktop, stacked on mobile */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-8 lg:gap-16 pt-16 pb-6 lg:py-0 w-full">
 
           {/* ===== LEFT: TYPOGRAPHY ===== */}
           <motion.div
@@ -126,7 +121,7 @@ export function Hero() {
               y: useTransform(() => textScrollY.get() + textY.get()),
               opacity: opacityFade,
             }}
-            className="relative z-30 flex flex-col justify-center order-2 lg:order-1"
+            className="relative z-30 flex flex-col justify-center order-2 lg:order-1 lg:col-span-7 w-full"
           >
             {/* Status chip */}
             <motion.div
@@ -160,59 +155,18 @@ export function Hero() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
-                className="relative font-heading font-semibold tracking-[-0.04em] leading-[0.88] text-[13vw] sm:text-[11vw] md:text-[9vw] lg:text-[5.2vw] xl:text-[4.8vw]"
+                className="relative font-heading font-semibold tracking-[-0.04em] leading-[0.9] text-[13vw] sm:text-[11vw] md:text-[9vw] lg:text-[6vw] xl:text-[5.5vw]"
               >
-                {/* Base text — slightly transparent for depth layering */}
-                <span className="block relative">
-                  {/* Shadow layer — creates 3D depth */}
-                  <span
-                    className="absolute inset-0 text-transparent select-none pointer-events-none"
-                    aria-hidden="true"
-                    style={{
-                      WebkitTextStroke: "0.5px rgba(167, 139, 250, 0.08)",
-                      transform: "translate3d(2px, 3px, 0)",
-                    }}
-                  >
-                    PRABHAV
-                    <br />
-                    KRISHNA R
-                  </span>
-
-                  {/* Main text with subtle gradient */}
-                  <span
-                    className="relative z-10 bg-clip-text text-transparent"
-                    style={{
-                      backgroundImage: "linear-gradient(175deg, #ffffff 0%, #f0f0f5 40%, #d4d4de 70%, #b8b8c8 100%)",
-                    }}
-                  >
-                    PRABHAV
-                    <br />
-                    KRISHNA R
-                  </span>
-
-                  {/* Animated light sweep overlay */}
-                  <motion.span
-                    className="absolute inset-0 z-20 bg-clip-text text-transparent select-none pointer-events-none"
-                    aria-hidden="true"
-                    initial={{ backgroundPosition: "-200% 0" }}
-                    animate={{ backgroundPosition: nameSweepComplete ? "300% 0" : "-200% 0" }}
-                    transition={{
-                      duration: nameSweepComplete ? 6 : 1.8,
-                      delay: nameSweepComplete ? 0 : 0.8,
-                      ease: "easeInOut",
-                      repeat: nameSweepComplete ? Infinity : 0,
-                      repeatDelay: nameSweepComplete ? 8 : 0,
-                    }}
-                    style={{
-                      backgroundImage: "linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.12) 45%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0.12) 55%, transparent 70%)",
-                      backgroundSize: "200% 100%",
-                      backgroundRepeat: "no-repeat",
-                    }}
-                  >
-                    PRABHAV
-                    <br />
-                    KRISHNA R
-                  </motion.span>
+                <span 
+                  className="block relative bg-clip-text text-transparent"
+                  style={{
+                    backgroundImage: "linear-gradient(175deg, #ffffff 0%, #f0f0f5 40%, #d4d4de 70%, #b8b8c8 100%)",
+                    filter: "drop-shadow(0px 8px 16px rgba(0,0,0,0.6)) drop-shadow(0px 2px 4px rgba(167,139,250,0.15))"
+                  }}
+                >
+                  PRABHAV
+                  <br />
+                  KRISHNA R
                 </span>
               </motion.h1>
             </motion.div>
@@ -298,7 +252,7 @@ export function Hero() {
               rotateY: portraitRotateY,
               opacity: opacityFade,
             }}
-            className="relative z-10 order-1 lg:order-2 flex items-center justify-center w-full"
+            className="relative z-10 order-1 lg:order-2 flex items-center justify-center w-full lg:col-span-5 h-[40vh] sm:h-[50vh] lg:h-auto"
           >
             <AnimatePresence mode="wait">
               {!showResume ? (
@@ -308,42 +262,55 @@ export function Hero() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.96 }}
                   transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  className="relative w-full max-w-[320px] sm:max-w-[420px] lg:max-w-none aspect-[1024/709] lg:aspect-auto lg:h-[70vh]"
+                  className="relative w-[75%] sm:w-[70%] lg:w-full h-[35vh] sm:h-[45vh] lg:h-[82vh] mx-auto flex items-center justify-center"
                 >
-                  {/* Spotlight glow behind portrait */}
+                  {/* Ambient purple glow — extends beyond image, very soft */}
                   <div
-                    className="absolute inset-0 z-0 pointer-events-none scale-110"
+                    className="absolute z-0 pointer-events-none"
                     style={{
-                      background: "radial-gradient(ellipse 60% 50% at 50% 60%, rgba(167, 139, 250, 0.08) 0%, transparent 70%)",
+                      inset: "-20%",
+                      background: "radial-gradient(ellipse 60% 55% at 50% 48%, rgba(167, 139, 250, 0.10) 0%, rgba(120, 70, 255, 0.04) 40%, transparent 70%)",
+                      filter: "blur(50px)",
                     }}
                   />
 
-                  {/* Subtle floating platform shadow */}
+                  {/* Secondary warm glow — adds depth under the subject */}
                   <div
-                    className="absolute bottom-0 left-1/2 -translate-x-1/2 z-0 pointer-events-none"
+                    className="absolute z-0 pointer-events-none"
                     style={{
-                      width: "70%",
-                      height: "8px",
-                      background: "radial-gradient(ellipse at center, rgba(167, 139, 250, 0.12) 0%, transparent 70%)",
-                      filter: "blur(8px)",
+                      inset: "-10%",
+                      background: "radial-gradient(ellipse 50% 40% at 50% 65%, rgba(167, 139, 250, 0.06) 0%, transparent 60%)",
+                      filter: "blur(30px)",
                     }}
                   />
 
-                  {/* Portrait image */}
+                  {/* Portrait image with composite mask for seamless blending */}
                   <div className="relative w-full h-full z-10">
                     <Image
-                      src="/images/hero/My-photo.webp"
-                      alt="Prabhav Krishna R"
+                      src="/images/hero/My-photo.jpeg"
+                      alt="Prabhav Krishna R — Computer Science Student and Developer"
                       fill
                       priority
                       fetchPriority="high"
-                      quality={90}
-                      sizes="(max-width: 640px) 85vw, (max-width: 1024px) 60vw, 40vw"
-                      className="object-contain object-center"
+                      quality={100}
+                      sizes="(max-width: 640px) 75vw, (max-width: 1024px) 60vw, 45vw"
+                      className="object-cover object-top"
                       style={{
                         transform: "translate3d(0, 0, 0)",
-                        WebkitMaskImage: "linear-gradient(to bottom, black 75%, transparent 100%)",
-                        maskImage: "linear-gradient(to bottom, black 75%, transparent 100%)",
+                        WebkitMaskImage: [
+                          "radial-gradient(ellipse 85% 80% at 50% 45%, black 35%, transparent 72%)",
+                          "linear-gradient(to bottom, transparent 0%, black 8%, black 70%, transparent 95%)",
+                          "linear-gradient(to right, transparent 0%, black 10%, black 75%, transparent 100%)",
+                          "linear-gradient(to left, transparent 0%, black 12%, black 80%, transparent 100%)",
+                        ].join(", "),
+                        maskImage: [
+                          "radial-gradient(ellipse 85% 80% at 50% 45%, black 35%, transparent 72%)",
+                          "linear-gradient(to bottom, transparent 0%, black 8%, black 70%, transparent 95%)",
+                          "linear-gradient(to right, transparent 0%, black 10%, black 75%, transparent 100%)",
+                          "linear-gradient(to left, transparent 0%, black 12%, black 80%, transparent 100%)",
+                        ].join(", "),
+                        maskComposite: "intersect",
+                        WebkitMaskComposite: "source-in",
                       }}
                     />
                   </div>

@@ -68,6 +68,7 @@ export function Certificates() {
                     src={`/images/certificates/${cert.file}`}
                     alt={cert.title}
                     fill
+                    priority={index < 2}
                     sizes="(max-width: 768px) 85vw, (max-width: 1200px) 60vw, 45vw"
                     className="object-cover opacity-60 mix-blend-screen group-hover:opacity-100 group-hover:mix-blend-normal transition-all duration-700"
                   />

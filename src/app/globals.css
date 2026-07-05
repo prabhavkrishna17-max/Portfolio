@@ -18,12 +18,14 @@
 }
 
 @layer base {
-  body {
+  html, body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
   }
 
   ::selection {

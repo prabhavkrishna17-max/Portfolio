@@ -11,25 +11,25 @@ const caseStudies = [
     id: "weatherbuddy",
     title: "WeatherBuddy",
     event: "NASA Space Apps Challenge",
-    role: "Lead Frontend Engineer",
-    overview: "A high-impact meteorological dashboard developed under intense time constraints to turn complex weather data into an accessible, practical interface.",
-    contribution: "Designed and engineered a streamlined dashboard that aggregates complex APIs into a single, intuitive view with immediate visual feedback for weather anomalies.",
-    impact: "Built MVP in 48 hours. Praised for clean UI and responsive design during the challenge.",
-    stack: "React, OpenWeather API, Framer Motion, Tailwind CSS",
-    certificateLink: "/images/certificates/TECHNOVIBE_2k26.webp", // Assuming an existing certificate here or omitting
-    readMoreLink: "https://github.com/prabhavkrishna17-max", 
+    problem: "Meteorological data is often dense and difficult for non-experts to interpret quickly during critical weather events.",
+    solution: "Used AI tools to quickly prototype a dashboard interface while I focused on wiring up the OpenWeather APIs and handling the JSON data responses.",
+    outcome: "Built an MVP in 48 hours. I learned how to manage asynchronous data fetching in React and how to prompt AI effectively for UI components.",
+    stack: "React, OpenWeather API, Tailwind CSS, AI Prototyping",
+    github: "https://github.com/prabhavkrishna17-max",
+    demo: null,
+    certificateLink: "/images/certificates/TECHNOVIBE_2k26.webp",
   },
   {
     id: "shopping-assistant",
     title: "Shopping Assistant",
     event: "Oblivion '25 Hackathon",
-    role: "Full-Stack Developer",
-    overview: "An intelligent consumer application engineered to optimize the digital shopping experience by providing smart product comparisons and tracking.",
-    contribution: "Built a centralized comparison engine that stores session data locally, allowing users to build a matrix of products with automated pros/cons highlighting.",
-    impact: "Created a scalable state architecture capable of handling multi-variant product comparisons.",
-    stack: "Next.js, TypeScript, LocalStorage API, Zustand",
+    problem: "Shoppers suffer from choice paralysis when comparing multiple products across different tabs, losing track of features.",
+    solution: "Leveraged AI to generate the base component structure, while I manually implemented the LocalStorage API logic to persist session data across reloads.",
+    outcome: "I gained a deep understanding of browser storage, state management with Zustand, and debugging hydration errors in Next.js.",
+    stack: "Next.js, TypeScript, LocalStorage, Zustand, AI Generation",
+    github: "https://github.com/prabhavkrishna17-max",
+    demo: null,
     certificateLink: "/images/certificates/Oblivion25.webp",
-    readMoreLink: "https://github.com/prabhavkrishna17-max",
   }
 ];
 
@@ -70,26 +70,45 @@ export function Projects() {
                   </p>
                   
                   <h3 className="text-4xl md:text-6xl font-heading font-medium mb-4 text-white tracking-tight">Artist Color Lab</h3>
-                  <p className="text-xl text-muted font-sans mb-8">Hosted at Entron.in</p>
                   
-                  <div className="space-y-6 text-lg text-muted/90 font-sans leading-relaxed">
-                    <p>
-                      Artist Color Lab is a web application built for artists to bridge the gap between physical paints and digital colours. It allows users to browse paint libraries, compare pigments, create custom colours, generate mixing recipes, and manage colour palettes through an intuitive interface.
-                    </p>
-                    <p>
-                      The project focuses heavily on premium UI/UX, colour management, usability and modern frontend engineering.
-                    </p>
+                  <div className="mt-8 space-y-8">
+                    <div>
+                      <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Problem</strong>
+                      <p className="text-muted/90 font-sans leading-relaxed">Artists lack a cohesive tool to bridge the physical medium of paints with digital colour theory and mixing calculations.</p>
+                    </div>
+                    <div>
+                      <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Approach & AI Usage</strong>
+                      <p className="text-muted/90 font-sans leading-relaxed">I utilized AI-assisted development to generate the core UI components and CSS styling. My focus was on modifying the generated logic, managing the color states, and connecting the components together into a working application.</p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Tech Stack</strong>
+                        <p className="text-muted/90 font-sans leading-relaxed">Next.js, Tailwind, AI Workflows</p>
+                      </div>
+                      <div>
+                        <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">What I Learned</strong>
+                        <p className="text-muted/90 font-sans leading-relaxed">Managing complex local state, debugging UI frameworks, and effective AI prompting.</p>
+                      </div>
+                    </div>
                   </div>
                   
-                  <div className="mt-12">
+                  <div className="mt-12 flex flex-wrap items-center gap-4">
                     <a 
                       href="https://entron.in" 
                       target="_blank" 
                       rel="noopener noreferrer" 
                       className="inline-flex items-center space-x-3 px-8 py-4 rounded-full bg-white text-[#060608] font-medium hover:scale-[1.02] active:scale-95 transition-all duration-300 group"
                     >
-                      <span>Visit Live Website</span>
+                      <span>Live Demo</span>
                       <ExternalLink size={18} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    </a>
+                    <a 
+                      href="https://github.com/prabhavkrishna17-max" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="inline-flex items-center space-x-3 px-8 py-4 rounded-full border border-white/20 text-white font-medium hover:bg-white/5 active:scale-95 transition-all duration-300 group"
+                    >
+                      <span>GitHub</span>
                     </a>
                   </div>
                 </motion.div>
@@ -167,12 +186,12 @@ export function Projects() {
                     <h4 className="text-3xl font-heading font-medium text-white mb-6">{study.title}</h4>
                     
                     <p className="text-lg text-muted/90 font-sans leading-relaxed mb-8 flex-grow">
-                      {study.overview}
+                      {study.solution}
                     </p>
 
                     <button 
                       onClick={() => setExpandedId(isExpanded ? null : study.id)}
-                      className="flex items-center space-x-2 text-sm font-medium uppercase tracking-[0.1em] text-white hover:text-accent transition-colors w-max mb-6"
+                      className="flex items-center space-x-2 text-sm font-medium uppercase tracking-[0.1em] text-white hover:text-accent transition-colors w-max mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
                       aria-expanded={isExpanded}
                     >
                       <span>{isExpanded ? "Close Documentation" : "Read Documentation"}</span>
@@ -189,46 +208,57 @@ export function Projects() {
                       <div className="overflow-hidden">
                         <div className="pt-6 border-t border-white/10 space-y-8 pb-4">
                           <div>
-                            <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Project Overview</strong>
-                            <p className="text-muted/90 font-sans leading-relaxed">{study.overview}</p>
+                            <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Problem</strong>
+                            <p className="text-muted/90 font-sans leading-relaxed">{study.problem}</p>
+                          </div>
+                          <div>
+                            <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Approach & AI Usage</strong>
+                            <p className="text-muted/90 font-sans leading-relaxed">{study.solution}</p>
                           </div>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div>
-                              <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Role</strong>
-                              <p className="text-muted/90 font-sans leading-relaxed">{study.role}</p>
-                            </div>
                             <div>
                               <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Tech Stack</strong>
                               <p className="text-muted/90 font-sans leading-relaxed">{study.stack}</p>
                             </div>
-                          </div>
-                          <div>
-                            <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Contribution</strong>
-                            <p className="text-muted/90 font-sans leading-relaxed">{study.contribution}</p>
-                          </div>
-                          <div>
-                            <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Impact</strong>
-                            <p className="text-muted/90 font-sans leading-relaxed">{study.impact}</p>
+                            <div>
+                              <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">What I Learned</strong>
+                              <p className="text-muted/90 font-sans leading-relaxed">{study.outcome}</p>
+                            </div>
                           </div>
                           <div className="flex flex-wrap gap-4 pt-4 border-t border-white/10">
-                            <a 
-                              href={study.certificateLink}
-                              target="_blank"
-                              rel="noopener noreferrer" 
-                              className="text-sm font-medium text-white hover:text-accent transition-colors underline underline-offset-4 decoration-white/20 hover:decoration-accent"
-                              aria-label={`View certificate for ${study.title}`}
-                            >
-                              Certificate
-                            </a>
-                            <a 
-                              href={study.readMoreLink}
-                              target="_blank"
-                              rel="noopener noreferrer" 
-                              className="text-sm font-medium text-white hover:text-accent transition-colors underline underline-offset-4 decoration-white/20 hover:decoration-accent"
-                              aria-label={`Read more about ${study.title}`}
-                            >
-                              Read More
-                            </a>
+                            {study.github && (
+                              <a 
+                                href={study.github}
+                                target="_blank"
+                                rel="noopener noreferrer" 
+                                className="text-sm font-medium text-white hover:text-accent transition-colors underline underline-offset-4 decoration-white/20 hover:decoration-accent"
+                                aria-label={`View GitHub repository for ${study.title}`}
+                              >
+                                GitHub
+                              </a>
+                            )}
+                            {study.demo && (
+                              <a 
+                                href={study.demo}
+                                target="_blank"
+                                rel="noopener noreferrer" 
+                                className="text-sm font-medium text-white hover:text-accent transition-colors underline underline-offset-4 decoration-white/20 hover:decoration-accent"
+                                aria-label={`View live demo for ${study.title}`}
+                              >
+                                Live Demo
+                              </a>
+                            )}
+                            {study.certificateLink && (
+                              <a 
+                                href={study.certificateLink}
+                                target="_blank"
+                                rel="noopener noreferrer" 
+                                className="text-sm font-medium text-white hover:text-accent transition-colors underline underline-offset-4 decoration-white/20 hover:decoration-accent"
+                                aria-label={`View certificate for ${study.title}`}
+                              >
+                                Certificate
+                              </a>
+                            )}
                           </div>
                         </div>
                       </div>
