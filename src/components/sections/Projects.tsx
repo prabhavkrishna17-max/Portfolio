@@ -169,6 +169,7 @@ export function Projects() {
                     <button 
                       onClick={() => setExpandedId(isExpanded ? null : study.id)}
                       className="flex items-center space-x-2 text-sm font-medium uppercase tracking-[0.1em] text-white hover:text-accent transition-colors w-max mb-6"
+                      aria-expanded={isExpanded}
                     >
                       <span>{isExpanded ? "Close Documentation" : "Read Documentation"}</span>
                       <ChevronDown size={16} className={cn("transition-transform duration-500", isExpanded && "rotate-180")} />

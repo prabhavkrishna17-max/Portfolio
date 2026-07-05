@@ -148,6 +148,7 @@ export function Hero() {
                     setShowResume(!showResume);
                   }}
                   className="px-8 py-3.5 rounded-xl bg-transparent text-white text-sm font-medium hover:bg-white/10 transition-colors"
+                  aria-expanded={showResume}
                 >
                   {showResume ? "Close Resume" : "Resume"}
                 </button>

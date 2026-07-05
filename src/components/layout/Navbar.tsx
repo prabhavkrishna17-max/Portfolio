@@ -115,6 +115,8 @@ export function Navbar() {
         <button
           className="md:hidden p-2 text-white pointer-events-auto"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle mobile menu"
+          aria-expanded={mobileMenuOpen}
         >
           {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
