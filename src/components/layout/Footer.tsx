@@ -18,14 +18,14 @@ export function Footer() {
             P<span className="text-accent">.</span>K
           </span>
           <span className="text-muted/50 text-sm">|</span>
-          <p className="text-muted text-sm">
+          <p className="text-white/70 text-sm">
             Designed and Developed by{" "}
             <span className="text-foreground font-medium">Prabhav Krishna R</span>
           </p>
         </div>
 
         <div className="flex items-center space-x-6">
-          <p className="text-muted text-sm">&copy; {new Date().getFullYear()} All rights reserved.</p>
+          <p className="text-white/70 text-sm">&copy; {new Date().getFullYear()} All rights reserved.</p>
           <button
             onClick={scrollToTop}
             className="p-3 rounded-full bg-white/5 hover:bg-white/10 text-muted hover:text-foreground transition-colors group"

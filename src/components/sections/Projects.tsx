@@ -202,6 +202,7 @@ export function Projects() {
                               target="_blank"
                               rel="noopener noreferrer" 
                               className="text-sm font-medium text-white hover:text-accent transition-colors underline underline-offset-4 decoration-white/20 hover:decoration-accent"
+                              aria-label={`View certificate for ${study.title}`}
                             >
                               Certificate
                             </a>
@@ -210,6 +211,7 @@ export function Projects() {
                               target="_blank"
                               rel="noopener noreferrer" 
                               className="text-sm font-medium text-white hover:text-accent transition-colors underline underline-offset-4 decoration-white/20 hover:decoration-accent"
+                              aria-label={`Read more about ${study.title}`}
                             >
                               Read More
                             </a>
