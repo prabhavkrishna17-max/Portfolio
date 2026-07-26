@@ -2,103 +2,105 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { fadeUpVariant, staggerContainer, sectionVariant, subtleScale } from "@/lib/animations";
 
 export function Experience() {
   return (
-    <section id="experience" className="py-24 md:py-32 relative z-10 bg-transparent text-white overflow-hidden">
-      <div className="w-full max-w-[1200px] mx-auto px-6 md:px-8 lg:px-16 relative z-10">
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-15%" }}
-          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="mb-16 md:mb-20"
-        >
-          <h2 className="text-sm font-mono text-muted uppercase tracking-[0.2em]">Experience</h2>
+    <section id="experience" className="py-24 md:py-32 relative z-10 bg-[#030305] text-white overflow-hidden">
+      <motion.div
+        variants={sectionVariant}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-15%" }}
+        className="w-full max-w-[1200px] mx-auto px-6 md:px-8 lg:px-16 relative z-10"
+      >
+        <motion.div variants={fadeUpVariant} className="mb-16 md:mb-20">
+          <h2 className="text-sm font-mono text-white/40 uppercase tracking-[0.2em]">Experience</h2>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true, margin: "-15%" }}
-          transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="glass-elevated rounded-3xl p-8 md:p-12 lg:p-16"
+          className="border border-white/[0.03] bg-white/[0.01] backdrop-blur-xl rounded-3xl p-8 md:p-12 lg:p-16"
         >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             
             {/* Editorial Copy */}
-            <div>
-              <p className="text-xs md:text-sm font-mono text-muted uppercase tracking-[0.2em] mb-6 flex items-center justify-between">
+            <motion.div variants={staggerContainer} className="flex flex-col gap-2">
+              <motion.p variants={fadeUpVariant} className="text-[10px] md:text-xs font-mono text-white/40 uppercase tracking-[0.2em] mb-4 flex items-center justify-between">
                 <span>Arkensys Realtors</span>
                 <span>Sep 2024 – Nov 2024</span>
-              </p>
-              <h3 className="text-2xl md:text-4xl font-heading font-medium text-white mb-2 leading-[1.2]">
-                Software Developer Intern
-              </h3>
+              </motion.p>
               
-              <div className="mt-8 space-y-6 text-sm md:text-base font-sans text-muted/90">
-                <div>
-                  <strong className="text-white font-medium block mb-1 uppercase tracking-wider font-mono text-xs">What I Actually Did</strong>
+              <motion.h3 variants={fadeUpVariant} className="text-2xl md:text-4xl font-medium text-white/90 mb-2 leading-[1.2]">
+                Software Developer Intern
+              </motion.h3>
+              
+              <motion.div variants={staggerContainer} className="mt-8 space-y-8 text-sm md:text-base font-light font-sans text-white/50 tracking-wide">
+                <motion.div variants={fadeUpVariant}>
+                  <strong className="text-white/70 font-medium block mb-2 uppercase tracking-[0.15em] font-mono text-[10px]">What I Actually Did</strong>
                   <p>Worked on real software projects using AI-assisted development tools like Claude, ChatGPT, and Gemini. Rather than writing thousands of lines from scratch, I used AI to accelerate development while I focused on understanding the logic and architecture.</p>
-                </div>
+                </motion.div>
                 
-                <div>
-                  <strong className="text-white font-medium block mb-1 uppercase tracking-wider font-mono text-xs">My Contribution</strong>
+                <motion.div variants={fadeUpVariant}>
+                  <strong className="text-white/70 font-medium block mb-2 uppercase tracking-[0.15em] font-mono text-[10px]">My Contribution</strong>
                   <p>The AI generated the heavy lifting of the code; my job was to understand it, debug it, modify it to fit the company&apos;s business logic, and integrate it into a cohesive, deployed product.</p>
-                </div>
+                </motion.div>
 
-                <div>
-                  <strong className="text-white font-medium block mb-1 uppercase tracking-wider font-mono text-xs">Hands-on Exposure</strong>
+                <motion.div variants={fadeUpVariant}>
+                  <strong className="text-white/70 font-medium block mb-2 uppercase tracking-[0.15em] font-mono text-[10px]">Hands-on Exposure</strong>
                   <p>Gained practical exposure to Cloudflare Pages deployment, managing Supabase Authentication, responsive UI design, basic database structures, and modern Git workflows.</p>
-                </div>
+                </motion.div>
 
-                <div>
-                  <strong className="text-white font-medium block mb-1 uppercase tracking-wider font-mono text-xs">Technologies Encountered</strong>
+                <motion.div variants={fadeUpVariant}>
+                  <strong className="text-white/70 font-medium block mb-2 uppercase tracking-[0.15em] font-mono text-[10px]">Technologies Encountered</strong>
                   <p>React, Next.js, Supabase, Tailwind CSS, Cloudflare</p>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
 
-              <a 
-                href="/internships/Internship_Report_Prabhav.pdf" 
+              <motion.a 
+                variants={fadeUpVariant}
+                href="/images/internships/Internship_Report_Prabhav.pdf" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="inline-flex items-center text-sm font-medium uppercase tracking-[0.15em] text-white hover:text-accent transition-colors group mt-10"
+                className="group flex items-center gap-3 text-[10px] sm:text-xs font-mono tracking-[0.15em] text-white/40 hover:text-white uppercase transition-colors duration-500 mt-12"
               >
                 <span>View Full Report</span>
-                <span className="ml-3 w-8 h-px bg-white/30 group-hover:bg-accent group-hover:w-12 transition-all duration-300" />
-              </a>
-            </div>
+                <span className="w-8 h-[1px] bg-white/30 group-hover:bg-white/70 group-hover:w-12 transition-all duration-500" />
+              </motion.a>
+            </motion.div>
 
             {/* Document Images Side-by-Side */}
-            <div className="grid grid-cols-2 gap-4 md:gap-6">
-              <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden glass p-1">
+            <motion.div variants={staggerContainer} className="grid grid-cols-2 gap-4 md:gap-6">
+              <motion.div variants={subtleScale} className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden border border-white/[0.03] bg-white/[0.02] p-1">
                 <div className="relative w-full h-full rounded-xl overflow-hidden">
                   <Image 
                     src="/images/internships/ARK_Offer_Letter.webp"
                     alt="Offer Letter" 
                     fill 
                     sizes="(max-width: 1024px) 50vw, 25vw"
-                    className="object-cover opacity-70 hover:opacity-100 hover:scale-[1.02] transition-all duration-700" 
+                    className="object-cover opacity-60 hover:opacity-100 hover:scale-[1.03] transition-all duration-700 ease-out" 
                   />
                 </div>
-              </div>
-              <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden glass p-1 translate-y-8">
+              </motion.div>
+              <motion.div variants={subtleScale} className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden border border-white/[0.03] bg-white/[0.02] p-1 translate-y-8">
                 <div className="relative w-full h-full rounded-xl overflow-hidden">
                   <Image 
                     src="/images/internships/Circuit.webp"
                     alt="Internship Environment" 
                     fill 
                     sizes="(max-width: 1024px) 50vw, 25vw"
-                    className="object-cover opacity-70 hover:opacity-100 hover:scale-[1.02] transition-all duration-700" 
+                    className="object-cover opacity-60 hover:opacity-100 hover:scale-[1.03] transition-all duration-700 ease-out" 
                   />
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
           </div>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }

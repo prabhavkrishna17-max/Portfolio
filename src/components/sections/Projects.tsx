@@ -1,10 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { useState } from "react";
-import { ChevronDown, ExternalLink } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useState, useEffect } from "react";
+import { X, ExternalLink } from "lucide-react";
+import { GlowCard } from "@/components/ui/GlowCard";
+import { fadeUpVariant, staggerContainer, sectionVariant, CINEMATIC_EASE } from "@/lib/animations";
+import { useLenis } from 'lenis/react';
 
 const caseStudies = [
   {
@@ -34,243 +36,279 @@ const caseStudies = [
 ];
 
 export function Projects() {
-  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const lenis = useLenis();
+
+  // Lock scroll when modal is open
+  useEffect(() => {
+    if (selectedId) {
+      document.body.style.overflow = "hidden";
+      if (lenis) lenis.stop();
+    } else {
+      document.body.style.overflow = "";
+      if (lenis) lenis.start();
+    }
+    return () => {
+      document.body.style.overflow = "";
+      if (lenis) lenis.start();
+    };
+  }, [selectedId, lenis]);
+
+  const selectedStudy = caseStudies.find(c => c.id === selectedId);
 
   return (
-    <section id="projects" className="py-24 md:py-32 relative z-10">
-      <div className="w-full max-w-[1200px] mx-auto px-6 md:px-8 lg:px-16">
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-15%" }}
-          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="mb-24 md:mb-32"
-        >
-          <h2 className="text-sm font-mono text-muted uppercase tracking-[0.2em] mb-6">Selected Work</h2>
+    <section id="projects" className="pt-32 md:pt-48 pb-24 md:pb-32 relative z-10 bg-[#030305] overflow-hidden">
+      
+      {/* Blend boundary top gradient */}
+      <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-transparent to-[#030305] z-0 pointer-events-none" />
+
+      <motion.div
+        variants={sectionVariant}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-15%" }}
+        className="w-full max-w-[1200px] mx-auto px-6 md:px-8 lg:px-16 relative z-10"
+      >
+        <motion.div variants={fadeUpVariant} className="mb-16 md:mb-20">
+          <h2 className="text-sm font-mono text-white/40 uppercase tracking-[0.2em] mb-6">Selected Work</h2>
         </motion.div>
 
-        <div className="space-y-40">
+        <div className="space-y-28">
           
           {/* 1. Flagship: Artist Color Lab */ }
           <div className="relative">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
               
               {/* Sticky Narrative Side */}
-              <div className="lg:col-span-5 lg:sticky lg:top-40 space-y-10">
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-15%" }}
-                  transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
-                >
-                  <p className="text-xs font-mono text-accent uppercase tracking-[0.2em] mb-6 flex items-center space-x-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+              <motion.div variants={staggerContainer} className="lg:col-span-5 lg:sticky lg:top-40 space-y-10">
+                <motion.div variants={fadeUpVariant}>
+                  <p className="text-[10px] sm:text-xs font-mono text-white/50 uppercase tracking-[0.2em] mb-6 flex items-center space-x-3">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white/70 animate-pulse" />
                     <span>Flagship Project</span>
                   </p>
                   
-                  <h3 className="text-4xl md:text-6xl font-heading font-medium mb-4 text-white tracking-tight">Artist Color Lab</h3>
+                  <h3 className="text-4xl md:text-5xl lg:text-6xl font-medium mb-4 text-white/90 tracking-tight leading-[1.1]">Artist Color Lab</h3>
                   
                   <div className="mt-8 space-y-8">
                     <div>
-                      <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Problem</strong>
-                      <p className="text-muted/90 font-sans leading-relaxed">Artists lack a cohesive tool to bridge the physical medium of paints with digital colour theory and mixing calculations.</p>
+                      <strong className="text-white/70 font-medium block mb-2 text-[10px] uppercase tracking-widest font-mono">Problem</strong>
+                      <p className="text-white/50 font-light font-sans tracking-wide leading-relaxed text-sm sm:text-base">Artists lack a cohesive tool to bridge the physical medium of paints with digital colour theory and mixing calculations.</p>
                     </div>
                     <div>
-                      <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Approach & AI Usage</strong>
-                      <p className="text-muted/90 font-sans leading-relaxed">I utilized AI-assisted development to generate the core UI components and CSS styling. My focus was on modifying the generated logic, managing the color states, and connecting the components together into a working application.</p>
+                      <strong className="text-white/70 font-medium block mb-2 text-[10px] uppercase tracking-widest font-mono">Approach & AI Usage</strong>
+                      <p className="text-white/50 font-light font-sans tracking-wide leading-relaxed text-sm sm:text-base">I utilized AI-assisted development to generate the core UI components and CSS styling. My focus was on modifying the generated logic, managing the color states, and connecting the components together into a working application.</p>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Tech Stack</strong>
-                        <p className="text-muted/90 font-sans leading-relaxed">Next.js, Tailwind, AI Workflows</p>
+                        <strong className="text-white/70 font-medium block mb-2 text-[10px] uppercase tracking-widest font-mono">Tech Stack</strong>
+                        <p className="text-white/50 font-light font-sans tracking-wide leading-relaxed text-xs sm:text-sm">Next.js, Tailwind, AI Workflows</p>
                       </div>
                       <div>
-                        <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">What I Learned</strong>
-                        <p className="text-muted/90 font-sans leading-relaxed">Managing complex local state, debugging UI frameworks, and effective AI prompting.</p>
+                        <strong className="text-white/70 font-medium block mb-2 text-[10px] uppercase tracking-widest font-mono">What I Learned</strong>
+                        <p className="text-white/50 font-light font-sans tracking-wide leading-relaxed text-xs sm:text-sm">Managing complex local state, debugging UI frameworks, and effective AI prompting.</p>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="mt-12 flex flex-wrap items-center gap-4">
+                  <div className="mt-12">
                     <a 
                       href="https://entron.in" 
                       target="_blank" 
                       rel="noopener noreferrer" 
-                      className="inline-flex items-center space-x-3 px-8 py-4 rounded-full bg-white text-[#060608] font-medium hover:scale-[1.02] active:scale-95 transition-all duration-300 group"
+                      className="group flex items-center gap-3 text-xs font-mono tracking-[0.1em] text-white/70 hover:text-white uppercase transition-colors duration-500"
                     >
                       <span>Live Demo</span>
-                      <ExternalLink size={18} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                    </a>
-                    <a 
-                      href="https://github.com/prabhavkrishna17-max" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="inline-flex items-center space-x-3 px-8 py-4 rounded-full border border-white/20 text-white font-medium hover:bg-white/5 active:scale-95 transition-all duration-300 group"
-                    >
-                      <span>GitHub</span>
+                      <span className="w-8 h-[1px] bg-white/30 group-hover:bg-white/70 group-hover:w-12 transition-all duration-500" />
                     </a>
                   </div>
                 </motion.div>
-              </div>
+              </motion.div>
 
               {/* Scrolling Visuals Side */}
-              <div className="lg:col-span-7 space-y-8 mt-12 lg:mt-0">
-                <motion.div 
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-15%" }}
-                  transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden glass p-1.5"
-                >
+              <motion.div variants={staggerContainer} className="lg:col-span-7 space-y-8 mt-12 lg:mt-0">
+                <GlowCard variant="project" intensity="high" interactive className="relative aspect-[16/10] w-full p-2">
                   <div className="relative w-full h-full rounded-xl overflow-hidden">
                     <Image
                       src="/images/projects/Artist_Color_Lab.webp"
                       alt="Artist Color Lab Main Interface"
                       fill
                       sizes="(max-width: 1024px) 100vw, 60vw"
-                      className="object-cover"
+                      className="object-cover opacity-85 hover:opacity-100 transition-opacity duration-700"
                     />
                   </div>
-                </motion.div>
+                </GlowCard>
 
-                <motion.div 
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-15%" }}
-                  transition={{ duration: 1, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden glass p-1.5"
-                >
+                <GlowCard variant="project" intensity="medium" interactive className="relative aspect-[16/10] w-full p-2">
                   <div className="relative w-full h-full rounded-xl overflow-hidden">
                     <Image
                       src="/images/projects/Artist_Color_Lab_Mixer.webp"
                       alt="Artist Color Lab Mixer Tool"
                       fill
                       sizes="(max-width: 1024px) 100vw, 60vw"
-                      className="object-cover"
+                      className="object-cover opacity-85 hover:opacity-100 transition-opacity duration-700"
                     />
                   </div>
-                </motion.div>
-              </div>
+                </GlowCard>
+              </motion.div>
             </div>
           </div>
 
           {/* Thin Divider */}
-          <div className="h-px w-full bg-white/10" />
+          <div className="h-px w-full bg-white/[0.03]" />
 
-          {/* 2 & 3. Text-Based Case Studies */}
+          {/* 2 & 3. Case Study Gallery */}
           <div className="space-y-16">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-15%" }}
-              transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-            >
-              <h3 className="text-2xl md:text-3xl font-heading font-medium text-white mb-12">Engineering Case Studies</h3>
+            <motion.div variants={fadeUpVariant}>
+              <h3 className="text-3xl font-medium text-white/90 mb-12">Engineering Case Studies</h3>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-              {caseStudies.map((study, index) => {
-                const isExpanded = expandedId === study.id;
-                
-                return (
-                  <motion.div 
-                    key={study.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-15%" }}
-                    transition={{ duration: 0.8, delay: index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-                    className="glass-elevated rounded-3xl p-8 md:p-10 flex flex-col h-full relative"
-                  >
-                    <p className="text-xs font-mono text-accent uppercase tracking-[0.2em] mb-4">{study.event}</p>
-                    <h4 className="text-3xl font-heading font-medium text-white mb-6">{study.title}</h4>
-                    
-                    <p className="text-lg text-muted/90 font-sans leading-relaxed mb-8 flex-grow">
-                      {study.solution}
-                    </p>
+            <motion.div variants={staggerContainer} className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+              {caseStudies.map((study) => (
+                <GlowCard 
+                  key={study.id}
+                  variant="project"
+                  interactive
+                  layoutId={`card-container-${study.id}`}
+                  onClick={() => setSelectedId(study.id)}
+                  className="cursor-pointer p-8 md:p-10 flex flex-col h-full group"
+                >
+                  <motion.p layoutId={`card-event-${study.id}`} className="text-[10px] font-mono text-white/30 uppercase tracking-widest mb-5">{study.event}</motion.p>
+                  <motion.h4 layoutId={`card-title-${study.id}`} className="text-2xl md:text-3xl font-medium text-white/90 mb-6 tracking-tight">{study.title}</motion.h4>
+                  
+                  <motion.p layoutId={`card-solution-${study.id}`} className="text-sm text-white/40 font-light tracking-wide leading-relaxed mb-8 line-clamp-3">
+                    {study.solution}
+                  </motion.p>
 
-                    <button 
-                      onClick={() => setExpandedId(isExpanded ? null : study.id)}
-                      className="flex items-center space-x-2 text-sm font-medium uppercase tracking-[0.1em] text-white hover:text-accent transition-colors w-max mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
-                      aria-expanded={isExpanded}
-                    >
-                      <span>{isExpanded ? "Close Documentation" : "Read Documentation"}</span>
-                      <ChevronDown size={16} className={cn("transition-transform duration-500", isExpanded && "rotate-180")} />
-                    </button>
-
-                    {/* Smooth expanding area without unmounting to prevent layout shifts */}
-                    <div 
-                      className={cn(
-                        "grid transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]",
-                        isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-                      )}
-                    >
-                      <div className="overflow-hidden">
-                        <div className="pt-6 border-t border-white/10 space-y-8 pb-4">
-                          <div>
-                            <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Problem</strong>
-                            <p className="text-muted/90 font-sans leading-relaxed">{study.problem}</p>
-                          </div>
-                          <div>
-                            <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Approach & AI Usage</strong>
-                            <p className="text-muted/90 font-sans leading-relaxed">{study.solution}</p>
-                          </div>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div>
-                              <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">Tech Stack</strong>
-                              <p className="text-muted/90 font-sans leading-relaxed">{study.stack}</p>
-                            </div>
-                            <div>
-                              <strong className="text-white font-medium block mb-2 text-sm uppercase tracking-wider font-mono">What I Learned</strong>
-                              <p className="text-muted/90 font-sans leading-relaxed">{study.outcome}</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-4 pt-4 border-t border-white/10">
-                            {study.github && (
-                              <a 
-                                href={study.github}
-                                target="_blank"
-                                rel="noopener noreferrer" 
-                                className="text-sm font-medium text-white hover:text-accent transition-colors underline underline-offset-4 decoration-white/20 hover:decoration-accent"
-                                aria-label={`View GitHub repository for ${study.title}`}
-                              >
-                                GitHub
-                              </a>
-                            )}
-                            {study.demo && (
-                              <a 
-                                href={study.demo}
-                                target="_blank"
-                                rel="noopener noreferrer" 
-                                className="text-sm font-medium text-white hover:text-accent transition-colors underline underline-offset-4 decoration-white/20 hover:decoration-accent"
-                                aria-label={`View live demo for ${study.title}`}
-                              >
-                                Live Demo
-                              </a>
-                            )}
-                            {study.certificateLink && (
-                              <a 
-                                href={study.certificateLink}
-                                target="_blank"
-                                rel="noopener noreferrer" 
-                                className="text-sm font-medium text-white hover:text-accent transition-colors underline underline-offset-4 decoration-white/20 hover:decoration-accent"
-                                aria-label={`View certificate for ${study.title}`}
-                              >
-                                Certificate
-                              </a>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
+                  <div className="mt-auto flex items-center justify-between">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-white/25 group-hover:text-white/50 transition-colors duration-500">Read Case Study</span>
+                    <ExternalLink size={14} className="text-white/20 group-hover:text-white/50 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-500" />
+                  </div>
+                </GlowCard>
+              ))}
+            </motion.div>
           </div>
 
         </div>
-      </div>
+      </motion.div>
+
+      {/* ===== FULL SCREEN CASE STUDY MODAL ===== */}
+      <AnimatePresence>
+        {selectedId && selectedStudy && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: CINEMATIC_EASE }}
+            className="fixed inset-0 z-[200] bg-[#030305]/95 backdrop-blur-2xl overflow-y-auto px-4 py-12 md:py-24"
+            onClick={() => setSelectedId(null)}
+          >
+            <div className="min-h-full flex flex-col items-center justify-center pointer-events-none">
+              <motion.div 
+                layoutId={`card-container-${selectedStudy.id}`}
+                className="w-full max-w-[800px] border border-white/[0.05] bg-[#060608] rounded-[2rem] p-6 sm:p-8 md:p-12 lg:p-16 relative pointer-events-auto"
+                onClick={(e) => e.stopPropagation()}
+                style={{ borderRadius: '2rem' }}
+              >
+                {/* Close Button */}
+                <button 
+                  onClick={() => setSelectedId(null)}
+                  className="absolute top-6 right-6 md:top-8 md:right-8 p-3 rounded-full bg-white/[0.02] border border-white/[0.05] text-white/40 hover:text-white/90 hover:bg-white/[0.05] transition-all duration-500 group"
+                  aria-label="Close modal"
+                >
+                  <X size={20} className="group-hover:rotate-90 transition-transform duration-500" />
+                </button>
+
+                <motion.p layoutId={`card-event-${selectedStudy.id}`} className="text-[10px] font-mono text-white/40 uppercase tracking-widest mb-4">{selectedStudy.event}</motion.p>
+                <motion.h4 layoutId={`card-title-${selectedStudy.id}`} className="text-4xl md:text-5xl font-medium text-white/90 mb-12">{selectedStudy.title}</motion.h4>
+
+                <div className="space-y-10 pb-8">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.2, ease: CINEMATIC_EASE }}
+                  >
+                    <strong className="text-white/70 font-medium block mb-3 text-[10px] uppercase tracking-widest font-mono">The Problem</strong>
+                    <p className="text-white/50 font-light font-sans tracking-wide leading-relaxed text-sm sm:text-base">{selectedStudy.problem}</p>
+                  </motion.div>
+                  
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.3, ease: CINEMATIC_EASE }}
+                  >
+                    <strong className="text-white/70 font-medium block mb-3 text-[10px] uppercase tracking-widest font-mono">Approach & AI Usage</strong>
+                    <motion.p layoutId={`card-solution-${selectedStudy.id}`} className="text-white/50 font-light font-sans tracking-wide leading-relaxed text-sm sm:text-base">
+                      {selectedStudy.solution}
+                    </motion.p>
+                  </motion.div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-10 border-y border-white/[0.05] py-10">
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.8, delay: 0.4, ease: CINEMATIC_EASE }}
+                    >
+                      <strong className="text-white/70 font-medium block mb-3 text-[10px] uppercase tracking-widest font-mono">Tech Stack</strong>
+                      <p className="text-white/50 font-light font-sans tracking-wide leading-relaxed text-sm">{selectedStudy.stack}</p>
+                    </motion.div>
+                    
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.8, delay: 0.5, ease: CINEMATIC_EASE }}
+                    >
+                      <strong className="text-white/70 font-medium block mb-3 text-[10px] uppercase tracking-widest font-mono">What I Learned</strong>
+                      <p className="text-white/50 font-light font-sans tracking-wide leading-relaxed text-sm">{selectedStudy.outcome}</p>
+                    </motion.div>
+                  </div>
+                </div>
+
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 1, delay: 0.6 }}
+                  className="flex flex-wrap gap-6 mt-4"
+                >
+                  {selectedStudy.github && (
+                    <a 
+                      href={selectedStudy.github}
+                      target="_blank"
+                      rel="noopener noreferrer" 
+                      className="group flex items-center gap-3 text-xs font-mono tracking-[0.1em] text-white/70 hover:text-white uppercase transition-colors duration-500"
+                    >
+                      <span>GitHub</span>
+                      <span className="w-6 h-[1px] bg-white/30 group-hover:bg-white/70 group-hover:w-10 transition-all duration-500" />
+                    </a>
+                  )}
+                  {selectedStudy.demo && (
+                    <a 
+                      href={selectedStudy.demo}
+                      target="_blank"
+                      rel="noopener noreferrer" 
+                      className="group flex items-center gap-3 text-xs font-mono tracking-[0.1em] text-white/70 hover:text-white uppercase transition-colors duration-500"
+                    >
+                      <span>Live Demo</span>
+                      <span className="w-6 h-[1px] bg-white/30 group-hover:bg-white/70 group-hover:w-10 transition-all duration-500" />
+                    </a>
+                  )}
+                  {selectedStudy.certificateLink && (
+                    <a 
+                      href={selectedStudy.certificateLink}
+                      target="_blank"
+                      rel="noopener noreferrer" 
+                      className="group flex items-center gap-3 text-xs font-mono tracking-[0.1em] text-white/70 hover:text-white uppercase transition-colors duration-500"
+                    >
+                      <span>Certificate</span>
+                      <span className="w-6 h-[1px] bg-white/30 group-hover:bg-white/70 group-hover:w-10 transition-all duration-500" />
+                    </a>
+                  )}
+                </motion.div>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </section>
   );
 }

@@ -2,21 +2,73 @@
 
 import { useState, useRef } from "react";
 import { toast } from "sonner";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import { GlowCard } from "@/components/ui/GlowCard";
+import ShapeGrid from "@/components/ui/ShapeGrid";
 import { 
   Mail, 
-  Phone, 
   MapPin, 
-  FileText, 
-  Copy, 
   CheckCircle2,
-  Calendar,
   Send,
   Loader2,
-  QrCode
+  ArrowUpRight
 } from "lucide-react";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
+import { LeetCodeLogo } from "@/components/ui/BrandIcons";
 import { cn } from "@/lib/utils";
+import { fadeUpVariant, staggerContainer, sectionVariant } from "@/lib/animations";
+
+const profiles = [
+  {
+    id: "github",
+    name: "GitHub",
+    description: "Open-source projects,\nexperiments and code.",
+    href: "https://github.com/prabhavkrishna17-max",
+    icon: <FaGithub className="w-10 h-10 text-white/90 group-hover:scale-105 transition-transform duration-500" />,
+    span: "col-span-2 sm:col-span-2",
+  },
+  {
+    id: "linkedin",
+    name: "LinkedIn",
+    description: "Experience,\neducation and achievements.",
+    href: "https://www.linkedin.com/in/prabhav-krishna",
+    icon: <FaLinkedin className="w-10 h-10 text-[#0A66C2] group-hover:scale-105 transition-transform duration-500" />,
+    span: "col-span-2 sm:col-span-2",
+  },
+  {
+    id: "leetcode",
+    name: "LeetCode",
+    description: "Data Structures,\nAlgorithms and practice.",
+    href: "https://leetcode.com/u/Prabhav_Krishna/",
+    icon: <LeetCodeLogo className="w-10 h-10 group-hover:scale-105 transition-transform duration-500" />,
+    span: "col-span-1",
+  },
+  {
+    id: "instagram",
+    name: "Instagram",
+    description: "Personal updates\nand moments.",
+    href: "https://www.instagram.com/prabhav_v_v/",
+    icon: <FaInstagram className="w-10 h-10 text-[#E4405F] group-hover:scale-105 transition-transform duration-500" />,
+    span: "col-span-1",
+  },
+  {
+    id: "email",
+    name: "Email",
+    description: "prabhavkrishna17@gmail.com",
+    href: "mailto:prabhavkrishna17@gmail.com",
+    icon: <Mail className="w-10 h-10 text-white/70 group-hover:scale-105 transition-transform duration-500" />,
+    action: "Send Email →",
+    span: "col-span-1",
+  },
+  {
+    id: "location",
+    name: "Location",
+    description: "Coimbatore,\nTamil Nadu, India",
+    href: "https://maps.google.com/?q=Coimbatore",
+    icon: <MapPin className="w-10 h-10 text-white/70 group-hover:scale-105 transition-transform duration-500" />,
+    span: "col-span-1",
+  }
+];
 
 export function Contact() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -24,6 +76,8 @@ export function Contact() {
   const [activeField, setActiveField] = useState<string | null>(null);
   
   const formRef = useRef<HTMLFormElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
+  const isInView = useInView(containerRef, { margin: "200px 0px 200px 0px" });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,9 +90,7 @@ export function Contact() {
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
       });
 
@@ -47,8 +99,6 @@ export function Contact() {
       if (response.ok && result.success) {
         setStatus('success');
         if (formRef.current) formRef.current.reset();
-        
-        // Auto reset after 5 seconds
         setTimeout(() => setStatus('idle'), 5000);
       } else {
         setStatus('error');
@@ -62,192 +112,100 @@ export function Contact() {
     }
   };
 
-  const copyToClipboard = (text: string, label: string) => {
-    navigator.clipboard.writeText(text);
-    toast.success(`${label} copied to clipboard!`);
-  };
-
   return (
-    <section id="contact" className="py-24 md:py-32 relative z-10 border-t border-white/5 bg-[#060608] overflow-hidden">
+    <section id="contact" ref={containerRef} className="pt-24 md:pt-32 pb-32 md:pb-48 relative z-10 bg-[#030305] overflow-hidden">
       
-      {/* Subtle Background Glow */}
-      <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="container mx-auto px-6 md:px-12 lg:px-16 max-w-[1280px] relative z-10">
+      {/* ========================================================= */}
+      {/* BACKGROUND LAYERS */}
+      {/* ========================================================= */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {/* Layer 1: Base Dark Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#030305] via-[#060609] to-[#030305]" />
         
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20">
+        {/* Layer 2: ShapeGrid */}
+        <div className="absolute inset-0 opacity-80 mix-blend-screen pointer-events-auto">
+          <ShapeGrid 
+            speed={0.18} 
+            squareSize={48} 
+            direction="diagonal" 
+            borderColor="rgba(255,255,255,0.06)" 
+            hoverFillColor="rgba(255,255,255,0.04)" 
+            shape="square" 
+            hoverTrailAmount={0}
+            paused={!isInView}
+          />
+        </div>
+        
+        {/* Layer 3: Radial Vignette */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#030305_90%)]" />
+        
+        {/* Layer 4: Noise Texture */}
+        <div 
+          className="absolute inset-0 opacity-[0.02] mix-blend-overlay hidden md:block"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          }}
+        />
+        
+        {/* Blend boundary top gradient */}
+        <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-[#030305] to-transparent" />
+      </div>
+
+      {/* ========================================================= */}
+      {/* FOREGROUND CONTENT */}
+      {/* ========================================================= */}
+      <motion.div 
+        variants={sectionVariant}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-15%" }}
+        className="container mx-auto px-6 md:px-12 lg:px-16 max-w-[1400px] relative z-10"
+      >
+        <motion.div variants={fadeUpVariant} className="mb-16 md:mb-24 text-center">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6 text-white leading-[1.1]">
+            Let&apos;s build <span className="text-white/40 italic font-serif font-light">something great.</span>
+          </h2>
+          <p className="text-lg md:text-xl text-white/50 font-light font-sans max-w-2xl mx-auto leading-relaxed">
+            I&apos;m always looking for ambitious projects and exciting opportunities. Let&apos;s start a conversation or explore my professional presence.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 lg:gap-12">
           
           {/* ========================================================= */}
-          {/* LEFT COLUMN: Context & Information */}
+          {/* LEFT COLUMN: Premium Contact Form */}
           {/* ========================================================= */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-15%" }}
-            transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="lg:col-span-5 flex flex-col justify-between"
-          >
-            <div>
-              {/* Header */}
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-medium tracking-tight mb-6 text-white leading-[1.1]">
-                Let&apos;s build<br />
-                <span className="text-muted/50">something great.</span>
-              </h2>
-              <p className="text-lg text-muted/80 font-sans leading-relaxed max-w-md mb-10">
-                I&apos;m always looking for ambitious projects and exciting opportunities. Let&apos;s connect and create impactful software.
-              </p>
-
-              {/* Status & Quick Info */}
-              <div className="space-y-6 mb-12">
-                
-                <div className="flex items-center gap-3 text-sm font-medium text-white/90">
-                  <div className="relative flex h-3 w-3 items-center justify-center">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-20"></span>
-                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-                  </div>
-                  Open to internships & collaborations
-                </div>
-
-                <div className="flex items-center gap-3 text-sm text-muted">
-                  <Calendar className="w-4 h-4 text-white/40" />
-                  Usually replies within 24 hours
-                </div>
-
-                <div className="flex items-center gap-3 text-sm text-muted">
-                  <MapPin className="w-4 h-4 text-white/40" />
-                  Coimbatore, Tamil Nadu, India
-                </div>
-
-                <div className="flex items-center gap-3 text-sm text-muted">
-                  <QrCode className="w-4 h-4 text-white/40" />
-                  Languages: English, Tamil, Malayalam
-                </div>
-              </div>
-
-              {/* Interactive Links Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-                
-                {/* Email Copy */}
-                <button 
-                  onClick={() => copyToClipboard("prabhavkrishna17@gmail.com", "Email")}
-                  className="flex items-center justify-between p-4 rounded-2xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.06] transition-colors group text-left"
-                >
-                  <div className="flex items-center gap-3 overflow-hidden">
-                    <Mail className="w-5 h-5 text-muted group-hover:text-accent transition-colors shrink-0" />
-                    <div className="truncate">
-                      <p className="text-[10px] font-mono uppercase tracking-widest text-muted/60 mb-0.5">Email</p>
-                      <p className="text-sm font-medium text-white truncate max-w-[120px]">prabhav...</p>
-                    </div>
-                  </div>
-                  <Copy className="w-4 h-4 text-white/20 group-hover:text-white/60 transition-colors shrink-0" />
-                </button>
-
-                {/* Phone Copy */}
-                <button 
-                  onClick={() => copyToClipboard("+91 7904604145", "Phone Number")}
-                  className="flex items-center justify-between p-4 rounded-2xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.06] transition-colors group text-left"
-                >
-                  <div className="flex items-center gap-3 overflow-hidden">
-                    <Phone className="w-5 h-5 text-muted group-hover:text-accent transition-colors shrink-0" />
-                    <div>
-                      <p className="text-[10px] font-mono uppercase tracking-widest text-muted/60 mb-0.5">Phone</p>
-                      <p className="text-sm font-medium text-white">+91 790...</p>
-                    </div>
-                  </div>
-                  <Copy className="w-4 h-4 text-white/20 group-hover:text-white/60 transition-colors shrink-0" />
-                </button>
-
-                {/* GitHub */}
-                <a 
-                  href="https://github.com/prabhavkrishna17-max"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 p-4 rounded-2xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.06] transition-colors group"
-                >
-                <FaGithub className="w-5 h-5 text-muted group-hover:text-accent transition-colors shrink-0" />
-                  <div>
-                    <p className="text-[10px] font-mono uppercase tracking-widest text-muted/60 mb-0.5">Code</p>
-                    <p className="text-sm font-medium text-white">GitHub Profile</p>
-                  </div>
-                </a>
-
-                {/* LinkedIn */}
-                <a 
-                  href="https://www.linkedin.com/in/prabhav-krishna"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 p-4 rounded-2xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.06] transition-colors group"
-                >
-                <FaLinkedin className="w-5 h-5 text-muted group-hover:text-accent transition-colors shrink-0" />
-                  <div>
-                    <p className="text-[10px] font-mono uppercase tracking-widest text-muted/60 mb-0.5">Network</p>
-                    <p className="text-sm font-medium text-white">LinkedIn Profile</p>
-                  </div>
-                </a>
-              </div>
-            </div>
-
-            {/* Resume Download CTA */}
-            <div>
-              <a 
-                href="/Prabhav_Krishna_Resume.pdf" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-medium text-muted hover:text-white transition-colors group"
-              >
-                <FileText className="w-4 h-4" />
-                <span className="underline underline-offset-4 decoration-white/20 group-hover:decoration-white/60 transition-colors">
-                  View Full Resume
-                </span>
-              </a>
-            </div>
-          </motion.div>
-
-
-          {/* ========================================================= */}
-          {/* RIGHT COLUMN: Premium Contact Form */}
-          {/* ========================================================= */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-15%" }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="lg:col-span-7"
-          >
-            <div className="relative glass p-8 sm:p-10 md:p-12 rounded-[2rem] border border-white/10 overflow-hidden shadow-2xl h-full flex flex-col justify-center">
+          <motion.div variants={staggerContainer} className="xl:col-span-5">
+            <GlowCard variant="contact" intensity="low" interactive className="p-6 sm:p-10 rounded-[2rem] h-full flex flex-col w-full bg-[#060608]/80 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8)] backdrop-blur-3xl">
               
-              {/* Form Lighting / Glow Effect */}
-              <div 
-                className="absolute inset-0 z-0 opacity-50 pointer-events-none transition-opacity duration-1000"
-                style={{
-                  background: activeField ? 'radial-gradient(circle at 50% 0%, rgba(167, 139, 250, 0.1) 0%, transparent 70%)' : 'transparent'
-                }}
-              />
+              <div className="mb-10">
+                <h3 className="text-2xl font-medium text-white/90 mb-2">Send a Message</h3>
+                <p className="text-sm text-white/50 font-light">Usually replies within 24 hours.</p>
+              </div>
 
-              <div className="relative z-10 w-full">
+              <div className="relative z-10 w-full flex-grow">
                 <AnimatePresence mode="wait">
                   
                   {/* SUCCESS STATE */}
                   {status === 'success' ? (
                     <motion.div 
                       key="success"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-                      className="flex flex-col items-center justify-center text-center py-20 h-full"
+                      initial={{ opacity: 0, scale: 0.98, filter: "blur(4px)" }}
+                      animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                      exit={{ opacity: 0, scale: 0.98, filter: "blur(4px)" }}
+                      transition={{ duration: 0.8, ease: [0.2, 0.9, 0.1, 1] }}
+                      className="flex flex-col items-center justify-center text-center h-full min-h-[400px]"
                     >
                       <motion.div 
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        transition={{ type: "spring", delay: 0.2, duration: 0.6, bounce: 0.5 }}
-                        className="w-20 h-20 bg-emerald-500/10 rounded-full flex items-center justify-center mb-6"
+                        transition={{ type: "spring", delay: 0.2, duration: 1.5, bounce: 0.2 }}
+                        className="w-16 h-16 border border-white/10 bg-white/[0.02] rounded-full flex items-center justify-center mb-6 shadow-inner"
                       >
-                        <CheckCircle2 className="w-10 h-10 text-emerald-400" />
+                        <CheckCircle2 className="w-6 h-6 text-white/70" />
                       </motion.div>
-                      <h3 className="text-3xl font-heading font-medium text-white mb-4">Message Sent</h3>
-                      <p className="text-muted/80 font-sans text-lg max-w-sm">
+                      <h3 className="text-2xl font-medium text-white/90 mb-4">Message Sent</h3>
+                      <p className="text-white/50 font-light font-sans text-sm md:text-base max-w-[280px] tracking-wide">
                         Thank you for reaching out. I&apos;ll review your message and get back to you shortly.
                       </p>
                     </motion.div>
@@ -261,17 +219,14 @@ export function Contact() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0, filter: 'blur(4px)' }}
-                      transition={{ duration: 0.4 }}
-                      className="space-y-6"
-                      aria-live="polite"
+                      transition={{ duration: 0.8 }}
+                      className="flex flex-col h-full space-y-5"
                     >
-                      {/* Honeypot */}
                       <input type="text" name="botcheck" className="hidden" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Name Field */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div className="relative group">
-                          <label htmlFor="name" className={cn("absolute left-5 transition-all duration-300 pointer-events-none text-xs font-medium", activeField === 'name' ? 'top-3 text-accent' : 'top-3 text-white/50')}>Name *</label>
+                          <label htmlFor="name" className={cn("absolute left-5 transition-all duration-300 pointer-events-none text-[10px] tracking-widest font-mono uppercase", activeField === 'name' ? 'top-3 text-white/70' : 'top-3 text-white/30')}>Name *</label>
                           <input
                             type="text"
                             id="name"
@@ -280,16 +235,12 @@ export function Contact() {
                             maxLength={100}
                             onFocus={() => setActiveField('name')}
                             onBlur={() => setActiveField(null)}
-                            className="w-full px-5 pt-8 pb-3 bg-white/5 border border-white/10 rounded-2xl text-white outline-none focus:border-accent/50 focus:bg-white/10 transition-all duration-300 peer"
-                            placeholder="John Doe"
-                            aria-invalid={status === 'error'}
-                            aria-describedby={status === 'error' ? 'form-error' : undefined}
+                            className="w-full px-5 pt-8 pb-3 bg-white/[0.02] border border-white/[0.05] rounded-2xl text-white/90 text-sm font-light outline-none focus:border-white/20 focus:bg-white/[0.04] transition-all duration-500 peer"
                           />
                         </div>
 
-                        {/* Email Field */}
                         <div className="relative group">
-                          <label htmlFor="email" className={cn("absolute left-5 transition-all duration-300 pointer-events-none text-xs font-medium", activeField === 'email' ? 'top-3 text-accent' : 'top-3 text-white/50')}>Email *</label>
+                          <label htmlFor="email" className={cn("absolute left-5 transition-all duration-300 pointer-events-none text-[10px] tracking-widest font-mono uppercase", activeField === 'email' ? 'top-3 text-white/70' : 'top-3 text-white/30')}>Email *</label>
                           <input
                             type="email"
                             id="email"
@@ -298,83 +249,65 @@ export function Contact() {
                             maxLength={100}
                             onFocus={() => setActiveField('email')}
                             onBlur={() => setActiveField(null)}
-                            className="w-full px-5 pt-8 pb-3 bg-white/5 border border-white/10 rounded-2xl text-white outline-none focus:border-accent/50 focus:bg-white/10 transition-all duration-300 peer"
-                            placeholder="john@company.com"
-                            aria-invalid={status === 'error'}
-                            aria-describedby={status === 'error' ? 'form-error' : undefined}
+                            className="w-full px-5 pt-8 pb-3 bg-white/[0.02] border border-white/[0.05] rounded-2xl text-white/90 text-sm font-light outline-none focus:border-white/20 focus:bg-white/[0.04] transition-all duration-500 peer"
                           />
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 gap-6">
-                        {/* Subject Field */}
-                        <div className="relative group">
-                          <label htmlFor="subject" className={cn("absolute left-5 transition-all duration-300 pointer-events-none text-xs font-medium", activeField === 'subject' ? 'top-3 text-accent' : 'top-3 text-white/50')}>Subject *</label>
-                          <input
-                            type="text"
-                            id="subject"
-                            name="subject"
-                            required
-                            maxLength={150}
-                            onFocus={() => setActiveField('subject')}
-                            onBlur={() => setActiveField(null)}
-                            className="w-full px-5 pt-8 pb-3 bg-white/5 border border-white/10 rounded-2xl text-white outline-none focus:border-accent/50 focus:bg-white/10 transition-all duration-300 peer"
-                            placeholder="Internship Opportunity"
-                            aria-invalid={status === 'error'}
-                            aria-describedby={status === 'error' ? 'form-error' : undefined}
-                          />
-                        </div>
-                      </div>
-
-                      {/* Message Field */}
                       <div className="relative group">
-                        <label htmlFor="message" className={cn("absolute left-5 transition-all duration-300 pointer-events-none text-xs font-medium", activeField === 'message' ? 'top-3 text-accent' : 'top-3 text-white/50')}>Message *</label>
+                        <label htmlFor="subject" className={cn("absolute left-5 transition-all duration-300 pointer-events-none text-[10px] tracking-widest font-mono uppercase", activeField === 'subject' ? 'top-3 text-white/70' : 'top-3 text-white/30')}>Subject *</label>
+                        <input
+                          type="text"
+                          id="subject"
+                          name="subject"
+                          required
+                          maxLength={150}
+                          onFocus={() => setActiveField('subject')}
+                          onBlur={() => setActiveField(null)}
+                          className="w-full px-5 pt-8 pb-3 bg-white/[0.02] border border-white/[0.05] rounded-2xl text-white/90 text-sm font-light outline-none focus:border-white/20 focus:bg-white/[0.04] transition-all duration-500 peer"
+                        />
+                      </div>
+
+                      <div className="relative group flex-grow">
+                        <label htmlFor="message" className={cn("absolute left-5 transition-all duration-300 pointer-events-none text-[10px] tracking-widest font-mono uppercase", activeField === 'message' ? 'top-3 text-white/70' : 'top-3 text-white/30')}>Message *</label>
                         <textarea
                           id="message"
                           name="message"
                           required
                           maxLength={3000}
-                          rows={4}
                           onFocus={() => setActiveField('message')}
                           onBlur={() => setActiveField(null)}
-                          className="w-full px-5 pt-8 pb-3 bg-white/5 border border-white/10 rounded-2xl text-white outline-none focus:border-accent/50 focus:bg-white/10 transition-all duration-300 resize-none peer"
-                          placeholder="Hi Prabhav, I'd like to discuss..."
-                          aria-invalid={status === 'error'}
-                          aria-describedby={status === 'error' ? 'form-error' : undefined}
+                          className="w-full h-full min-h-[140px] px-5 pt-8 pb-3 bg-white/[0.02] border border-white/[0.05] rounded-2xl text-white/90 text-sm font-light outline-none focus:border-white/20 focus:bg-white/[0.04] transition-all duration-500 resize-none peer"
                         />
                       </div>
 
-                      {/* Error Message */}
                       <AnimatePresence>
                         {status === 'error' && (
                           <motion.div 
-                            id="form-error"
-                            role="alert"
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
-                            className="text-red-400 text-sm pl-2"
+                            className="text-white/50 text-xs pl-2 font-mono uppercase tracking-widest"
                           >
                             {errorMessage}
                           </motion.div>
                         )}
                       </AnimatePresence>
 
-                      {/* Submit Button */}
                       <button
                         type="submit"
                         disabled={status === 'loading'}
-                        className="w-full py-4 px-8 bg-white text-[#060608] font-medium rounded-2xl hover:bg-white/90 focus:outline-none focus:ring-4 focus:ring-white/20 active:scale-[0.98] transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
+                        className="w-full py-4 mt-2 border border-white/[0.05] bg-white/[0.03] hover:bg-white/[0.08] text-white/70 hover:text-white text-xs tracking-[0.2em] font-mono uppercase rounded-2xl focus:outline-none transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-4 group"
                       >
                         {status === 'loading' ? (
                           <>
-                            <Loader2 className="w-5 h-5 animate-spin" />
+                            <Loader2 className="w-4 h-4 animate-spin opacity-50" />
                             <span>Sending...</span>
                           </>
                         ) : (
                           <>
                             <span>Send Message</span>
-                            <Send className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                            <Send className="w-3 h-3 opacity-50 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-500" />
                           </>
                         )}
                       </button>
@@ -382,11 +315,50 @@ export function Contact() {
                   )}
                 </AnimatePresence>
               </div>
+            </GlowCard>
+          </motion.div>
+
+          {/* ========================================================= */}
+          {/* RIGHT COLUMN: Connect Profiles (Bento Grid) */}
+          {/* ========================================================= */}
+          <motion.div variants={staggerContainer} className="xl:col-span-7">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 h-full">
+              {profiles.map((profile) => (
+                <motion.a
+                  key={profile.id}
+                  href={profile.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variants={fadeUpVariant}
+                  className={`block group ${profile.span}`}
+                >
+                  <GlowCard 
+                    variant="contact" 
+                    intensity="low" 
+                    interactive 
+                    className="h-full p-6 sm:p-8 flex flex-col justify-between shadow-[0_20px_40px_-15px_rgba(0,0,0,0.6)] backdrop-blur-3xl"
+                  >
+                    <div>
+                      <div className="mb-6 flex items-start justify-between">
+                        <div className="p-3 sm:p-4 bg-white/[0.02] rounded-3xl border border-white/[0.04] shadow-inner">
+                          {profile.icon}
+                        </div>
+                        <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6 text-white/20 group-hover:text-white transition-colors duration-500 transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                      </div>
+                      
+                      <h3 className="text-lg sm:text-xl font-medium text-white/90 mb-2">{profile.name}</h3>
+                      <p className="text-xs sm:text-sm text-white/50 font-light leading-relaxed whitespace-pre-line">
+                        {profile.description}
+                      </p>
+                    </div>
+                  </GlowCard>
+                </motion.a>
+              ))}
             </div>
           </motion.div>
 
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

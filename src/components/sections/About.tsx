@@ -1,20 +1,25 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { GlowCard } from "@/components/ui/GlowCard";
+import { fadeUpVariant, staggerContainer, sectionVariant } from "@/lib/animations";
 
 export function About() {
   return (
-    <section id="about" className="py-24 md:py-32 relative z-10 bg-transparent text-white overflow-hidden">
-      <div className="w-full max-w-[1200px] mx-auto px-6 md:px-8 lg:px-16 relative z-10">
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-15%" }}
-          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="mb-16 md:mb-24"
-        >
-          <h2 className="text-sm font-mono text-muted uppercase tracking-[0.2em]">Background</h2>
+    <section id="about" className="pt-16 md:pt-24 pb-24 md:pb-32 relative z-10 bg-[#030305] text-white overflow-hidden">
+      
+      {/* Blend boundary top gradient */}
+      <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-transparent to-[#030305] z-0 pointer-events-none" />
+
+      <motion.div 
+        variants={sectionVariant}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-15%" }}
+        className="w-full max-w-[1200px] mx-auto px-6 md:px-8 lg:px-16 relative z-10"
+      >
+        <motion.div variants={fadeUpVariant} className="mb-16 md:mb-20">
+          <h2 className="text-sm font-mono text-white/40 uppercase tracking-[0.2em]">Background</h2>
         </motion.div>
 
         {/* Editorial Layout */}
@@ -22,103 +27,100 @@ export function About() {
           
           {/* Main Narrative */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true, margin: "-15%" }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="lg:col-span-7"
+            className="lg:col-span-7 flex flex-col gap-8"
           >
-            <h3 className="text-2xl md:text-3xl lg:text-4xl font-heading font-medium tracking-tight leading-[1.3] text-foreground mb-8">
+            <motion.h3 variants={fadeUpVariant} className="text-2xl md:text-3xl lg:text-4xl font-medium tracking-tight leading-[1.3] text-white/90">
               I am a curious developer and Computer Science student learning to build useful software.
-            </h3>
+            </motion.h3>
             
-            <div className="space-y-6 text-lg text-muted/90 font-sans leading-relaxed">
-              <p>
+            <motion.div variants={staggerContainer} className="space-y-6 text-base md:text-lg text-white/50 font-light leading-relaxed tracking-wide">
+              <motion.p variants={fadeUpVariant}>
                 Currently in my second year at SNS College of Technology, my focus is on practical problem-solving. I am deeply interested in modern web development and UI/UX design, and I learn best by building real-world projects rather than just reading documentation.
-              </p>
-              <p>
+              </motion.p>
+              <motion.p variants={fadeUpVariant}>
                 I am a strong advocate for AI-assisted development. I actively use tools like Claude, ChatGPT, and Gemini to generate code, which accelerates my ability to prototype ideas. My actual work lies in understanding that code, testing it, modifying the business logic, and deploying it to production.
-              </p>
-              <p>
-                I don't claim to know everything yet, but I learn incredibly fast. My goal is to continually improve my understanding of systems architecture, ask the right questions, and eventually contribute to products that genuinely impact how people work and live.
-              </p>
-            </div>
+              </motion.p>
+              <motion.p variants={fadeUpVariant}>
+                I don&apos;t claim to know everything yet, but I learn incredibly fast. My goal is to continually improve my understanding of systems architecture, ask the right questions, and eventually contribute to products that genuinely impact how people work and live.
+              </motion.p>
+            </motion.div>
           </motion.div>
 
           {/* Factual Information */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true, margin: "-15%" }}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="lg:col-span-5 space-y-12"
+            className="lg:col-span-5 space-y-6"
           >
-            
             {/* Education — College */}
-            <div>
-              <h4 className="text-xs font-mono text-muted uppercase tracking-[0.1em] mb-4">University</h4>
-              <div className="space-y-1 font-sans text-foreground">
-                <p className="font-medium text-white">B.E Computer Science & Engineering</p>
-                <p>SNS College of Technology</p>
-                <p className="text-muted">Second Year</p>
-              </div>
-            </div>
+            <motion.div variants={fadeUpVariant}>
+              <GlowCard variant="default" intensity="low" interactive className="p-8">
+                <h4 className="text-[10px] md:text-xs font-mono text-white/40 uppercase tracking-[0.1em] mb-4">University</h4>
+                <div className="space-y-1 font-sans text-white/70 text-sm md:text-base">
+                  <p className="font-medium text-white/90">B.E Computer Science & Engineering</p>
+                  <p>SNS College of Technology</p>
+                  <p className="text-white/40 text-xs mt-1 font-mono tracking-widest uppercase">Second Year</p>
+                </div>
+              </GlowCard>
+            </motion.div>
 
             {/* Education — School */}
-            <div>
-              <h4 className="text-xs font-mono text-muted uppercase tracking-[0.1em] mb-4">School</h4>
-              <div className="space-y-3 font-sans text-foreground">
-                <p>Vidya Vikasini Matric Higher Secondary School</p>
-                <div className="flex flex-col gap-1">
-                  <p className="text-muted flex justify-between max-w-[200px]">
-                    <span>12th Grade</span>
-                    <span className="text-white">525 / 600</span>
-                  </p>
-                  <p className="text-muted flex justify-between max-w-[200px]">
-                    <span>10th Grade</span>
-                    <span className="text-white">466 / 500</span>
-                  </p>
+            <motion.div variants={fadeUpVariant}>
+              <GlowCard variant="default" intensity="low" interactive className="p-8">
+                <h4 className="text-[10px] md:text-xs font-mono text-white/40 uppercase tracking-[0.1em] mb-4">School</h4>
+                <div className="space-y-3 font-sans text-white/70 text-sm md:text-base">
+                  <p>Vidya Vikasini Matric Higher Secondary School</p>
                 </div>
-              </div>
-            </div>
+              </GlowCard>
+            </motion.div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-              {/* Core Stack */}
-              <div>
-                <h4 className="text-xs font-mono text-muted uppercase tracking-[0.1em] mb-4">Core Stack</h4>
-                <div className="space-y-1 font-sans text-foreground">
-                  <p>Next.js & React</p>
-                  <p>TypeScript</p>
-                  <p>Python</p>
-                  <p>HTML / CSS</p>
-                </div>
-              </div>
+            <motion.div variants={fadeUpVariant}>
+              <GlowCard variant="default" intensity="low" interactive className="p-8">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+                  {/* Core Stack */}
+                  <div>
+                    <h4 className="text-[10px] md:text-xs font-mono text-white/40 uppercase tracking-[0.1em] mb-4">Core Stack</h4>
+                    <div className="space-y-2 font-sans text-white/70 text-sm">
+                      <p>Next.js & React</p>
+                      <p>TypeScript</p>
+                      <p>Python</p>
+                      <p>HTML / CSS</p>
+                    </div>
+                  </div>
 
-              {/* Design & Tools */}
-              <div>
-                <h4 className="text-xs font-mono text-muted uppercase tracking-[0.1em] mb-4">Design & Tools</h4>
-                <div className="space-y-1 font-sans text-foreground">
-                  <p>Figma & UI/UX</p>
-                  <p>FlutterFlow</p>
-                  <p>Canva</p>
-                  <p>GitHub</p>
-                </div>
-              </div>
+                  {/* Design & Tools */}
+                  <div>
+                    <h4 className="text-[10px] md:text-xs font-mono text-white/40 uppercase tracking-[0.1em] mb-4">Design & Tools</h4>
+                    <div className="space-y-2 font-sans text-white/70 text-sm">
+                      <p>UI/UX Design</p>
+                      <p>FlutterFlow</p>
+                      <p>Canva</p>
+                      <p>GitHub</p>
+                    </div>
+                  </div>
 
-              {/* Languages */}
-              <div className="col-span-2 md:col-span-1">
-                <h4 className="text-xs font-mono text-muted uppercase tracking-[0.1em] mb-4">Languages</h4>
-                <div className="space-y-1 font-sans text-foreground">
-                  <p>English</p>
-                  <p>Tamil</p>
-                  <p>Malayalam</p>
+                  {/* Languages */}
+                  <div className="col-span-2 md:col-span-1">
+                    <h4 className="text-[10px] md:text-xs font-mono text-white/40 uppercase tracking-[0.1em] mb-4">Languages</h4>
+                    <div className="space-y-2 font-sans text-white/70 text-sm">
+                      <p>English</p>
+                      <p>Tamil</p>
+                      <p>Malayalam</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </GlowCard>
+            </motion.div>
 
           </motion.div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

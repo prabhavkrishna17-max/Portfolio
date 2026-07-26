@@ -1,26 +1,25 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { GlowCard } from "@/components/ui/GlowCard";
 
 export function Skills() {
   const skillCategories = [
     {
-      id: "01",
-      title: "Comfortable With",
-      description: "Technologies I use regularly to build interfaces and logic.",
-      items: ["HTML / CSS", "React", "Next.js", "Tailwind CSS", "Python"]
+      title: "Frontend",
+      items: ["React", "Next.js", "Tailwind CSS", "Framer Motion"]
     },
     {
-      id: "02",
-      title: "Currently Learning",
-      description: "Areas I am actively exploring to deepen my understanding of systems.",
-      items: ["TypeScript", "Frontend Architecture", "Supabase (Database)", "AI Workflow Integration"]
+      title: "Backend",
+      items: ["FastAPI", "Supabase", "PostgreSQL", "REST APIs"]
     },
     {
-      id: "03",
-      title: "Tools & Platforms",
-      description: "The platforms I use to design, debug, and deploy software.",
-      items: ["GitHub", "Cloudflare Pages", "Figma", "Canva", "AI Assistants (Claude, Gemini)"]
+      title: "Deployment",
+      items: ["Cloudflare Pages", "GitHub Actions", "GoDaddy DNS"]
+    },
+    {
+      title: "AI & Workflow",
+      items: ["Claude", "Gemini", "ChatGPT", "Antigravity"]
     }
   ];
 
@@ -37,47 +36,46 @@ export function Skills() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-15%" }}
               transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="pl-6 border-l border-white/10 relative"
             >
-              <h2 className="text-sm font-mono text-muted uppercase tracking-[0.2em] mb-6">Technical Exposure</h2>
-              <h3 className="text-4xl md:text-5xl lg:text-6xl font-heading font-medium tracking-tight text-white leading-[1.1] mb-8">
+              {/* Subtle accent line */}
+              <div className="absolute left-0 top-0 w-[2px] h-12 bg-white/40" />
+              
+              <h2 className="text-[10px] md:text-xs font-mono text-white/40 uppercase tracking-[0.2em] mb-6">Technical Exposure</h2>
+              <h3 className="text-4xl md:text-5xl lg:text-6xl font-heading font-medium tracking-tight text-white/90 leading-[1.1] mb-10">
                 Skills &<br />Workflow
               </h3>
-              <p className="text-lg text-muted/90 font-sans leading-relaxed max-w-md">
-                I do not claim to be an expert in everything. Instead, I focus on building a strong foundation, staying highly adaptable, and using modern tools to accelerate my learning.
+              <p className="text-base md:text-lg text-white/50 font-light leading-relaxed max-w-md tracking-wide">
+                I build modern web applications by combining solid engineering fundamentals with AI-assisted development, rapid prototyping, and iterative refinement. Every project emphasizes maintainability, performance, and user experience.
               </p>
             </motion.div>
           </div>
 
           {/* Process Steps */}
-          <div className="lg:col-span-7 space-y-16">
+          <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
             {skillCategories.map((category, index) => (
               <motion.div
-                key={category.id}
+                key={category.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-15%" }}
                 transition={{ duration: 0.8, delay: index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-                className="relative pl-12 md:pl-16 border-l border-white/10"
               >
-                <div className="absolute top-0 left-0 w-8 h-px bg-white/20 -translate-x-full" />
-                <span className="absolute left-4 top-0 -translate-y-1/2 text-xs font-mono text-accent bg-[#060608] py-1">
-                  {category.id}
-                </span>
-                
-                <h4 className="text-2xl font-heading font-medium text-white mb-3">{category.title}</h4>
-                <p className="text-sm md:text-base text-muted/80 font-sans leading-relaxed mb-6">
-                  {category.description}
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  {category.items.map((item) => (
-                    <span 
-                      key={item}
-                      className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-sm font-medium text-white/90"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
+                <GlowCard variant="skills" intensity="medium" interactive className="p-8 h-full">
+                  <h4 className="text-[10px] md:text-xs font-mono text-white/40 uppercase tracking-[0.1em] mb-4 pb-4 border-b border-white/[0.05]">
+                    {category.title}
+                  </h4>
+                  <div className="flex flex-col gap-2">
+                    {category.items.map((item) => (
+                      <span 
+                        key={item}
+                        className="text-sm md:text-base text-white/70 font-sans tracking-wide"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </GlowCard>
               </motion.div>
             ))}
           </div>

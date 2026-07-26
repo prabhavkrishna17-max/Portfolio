@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { useLenis } from 'lenis/react';
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -18,6 +19,7 @@ export function Navbar() {
   const [active, setActive] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
+  const lenis = useLenis();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0;
@@ -70,11 +72,11 @@ export function Navbar() {
         className={cn(
           "pointer-events-auto flex items-center justify-between transition-all duration-700",
           scrolled 
-            ? "w-[92%] md:w-max glass-elevated rounded-full px-5 py-2.5" 
-            : "w-full max-w-[1200px] mx-auto px-6 md:px-8 lg:px-12 py-4 bg-transparent"
+            ? "w-[92%] md:w-max liquid-nav rounded-full px-6 py-2.5" 
+            : "w-full max-w-[1200px] mx-auto px-6 md:px-8 lg:px-12 py-5 bg-transparent"
         )}
       >
-        <a href="#top" className="text-base font-heading font-medium tracking-tight text-white mr-8">
+        <a href="#top" onClick={(e) => { e.preventDefault(); if(lenis) lenis.scrollTo('#top'); }} className="text-base font-heading font-medium tracking-tight text-white mr-8">
           Prabhav<span className="text-muted/50">.</span>
         </a>
 
@@ -86,6 +88,10 @@ export function Navbar() {
               <a
                 key={link.name}
                 href={link.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (lenis) lenis.scrollTo(link.href);
+                }}
                 className={cn(
                   "relative px-4 py-2 rounded-full text-sm transition-colors duration-300",
                   isActive ? "text-white" : "text-muted hover:text-foreground"
@@ -105,7 +111,11 @@ export function Navbar() {
           
           <a
             href="#contact"
-            className="ml-3 px-5 py-2 rounded-full text-sm font-medium bg-white text-[#060608] hover:bg-white/90 transition-colors duration-300"
+            onClick={(e) => {
+              e.preventDefault();
+              if (lenis) lenis.scrollTo('#contact');
+            }}
+            className="ml-3 px-4 py-1.5 rounded-full text-[13px] font-medium border border-white/20 bg-white/5 text-white backdrop-blur-md hover:bg-white/10 transition-colors duration-300 shadow-sm"
           >
             Let&apos;s Talk
           </a>
@@ -137,7 +147,11 @@ export function Navbar() {
                 <a
                   key={link.name}
                   href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setMobileMenuOpen(false);
+                    if (lenis) lenis.scrollTo(link.href);
+                  }}
                   className="px-4 py-3 rounded-xl text-sm text-foreground hover:bg-white/[0.04] transition-colors"
                 >
                   {link.name}

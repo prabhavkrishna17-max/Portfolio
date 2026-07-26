@@ -9,6 +9,7 @@ import { getBaseUrl } from "@/lib/utils";
 import { Toaster } from "sonner";
 import { CommandPalette } from "@/components/ui/CommandPalette";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { SmoothScroll } from "@/components/layout/SmoothScroll";
 
 export const metadata: Metadata = {
   title: "Prabhav Krishna R | Student & Developer",
@@ -76,13 +77,15 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-background text-foreground font-sans selection:bg-white selection:text-black overflow-x-hidden">
-        <ScrollProgress />
-        <CommandPalette />
-        <CustomCursor />
-        {children}
-        <Toaster position="bottom-right" theme="dark" />
-        <Analytics />
-        <SpeedInsights />
+        <SmoothScroll>
+          <ScrollProgress />
+          <CommandPalette />
+          <CustomCursor />
+          {children}
+          <Toaster position="bottom-right" theme="dark" />
+          <Analytics />
+          <SpeedInsights />
+        </SmoothScroll>
       </body>
     </html>
   );
