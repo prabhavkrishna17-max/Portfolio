@@ -1,11 +1,11 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { X, ExternalLink } from "lucide-react";
 import { GlowCard } from "@/components/ui/GlowCard";
-import { fadeUpVariant, staggerContainer, sectionVariant, CINEMATIC_EASE } from "@/lib/animations";
+import { fadeUpVariant, staggerContainer, sectionVariant, subtleScale, CINEMATIC_EASE } from "@/lib/animations";
 import { useLenis } from 'lenis/react';
 
 const caseStudies = [
@@ -38,6 +38,17 @@ const caseStudies = [
 export function Projects() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const lenis = useLenis();
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  // Subtle internal parallax for flagship images
+  const yImage1 = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+  const yImage2 = useTransform(scrollYProgress, [0, 1], ["-12%", "12%"]);
+  const yText = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
 
   // Lock scroll when modal is open
   useEffect(() => {
@@ -57,10 +68,23 @@ export function Projects() {
   const selectedStudy = caseStudies.find(c => c.id === selectedId);
 
   return (
-    <section id="projects" className="pt-32 md:pt-48 pb-24 md:pb-32 relative z-10 bg-[#030305] overflow-hidden">
+    <section id="projects" ref={sectionRef} className="pt-20 sm:pt-28 md:pt-48 pb-24 md:pb-32 relative z-10 overflow-hidden">
       
       {/* Blend boundary top gradient */}
-      <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-transparent to-[#030305] z-0 pointer-events-none" />
+      <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-[#030305]/0 to-transparent z-10 pointer-events-none" />
+
+      {/* Ambient scanning lines background */}
+      <motion.div 
+        animate={{ backgroundPosition: ["0% 0%", "0% 100%"] }}
+        transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none mix-blend-overlay transform-gpu will-change-transform"
+        style={{
+          backgroundImage: "repeating-linear-gradient(to bottom, transparent, transparent 40px, rgba(255, 255, 255, 0.5) 40px, rgba(255, 255, 255, 0.5) 41px)",
+          backgroundSize: "100% 200%",
+          maskImage: "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)"
+        }}
+      />
 
       <motion.div
         variants={sectionVariant}
@@ -73,21 +97,22 @@ export function Projects() {
           <h2 className="text-sm font-mono text-white/40 uppercase tracking-[0.2em] mb-6">Selected Work</h2>
         </motion.div>
 
-        <div className="space-y-28">
+        <div className="space-y-16 sm:space-y-20 lg:space-y-28">
           
           {/* 1. Flagship: Artist Color Lab */ }
           <div className="relative">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
               
               {/* Sticky Narrative Side */}
-              <motion.div variants={staggerContainer} className="lg:col-span-5 lg:sticky lg:top-40 space-y-10">
-                <motion.div variants={fadeUpVariant}>
-                  <p className="text-[10px] sm:text-xs font-mono text-white/50 uppercase tracking-[0.2em] mb-6 flex items-center space-x-3">
+              <div className="lg:col-span-5 lg:sticky lg:top-40 h-max">
+                <motion.div variants={staggerContainer} style={{ y: yText }} className="space-y-10 transform-gpu will-change-transform">
+                  <motion.div variants={fadeUpVariant}>
+                  <p className="text-[10px] sm:text-xs font-mono text-white/50 uppercase tracking-[0.25em] mb-6 flex items-center space-x-3">
                     <span className="w-1.5 h-1.5 rounded-full bg-white/70 animate-pulse" />
                     <span>Flagship Project</span>
                   </p>
                   
-                  <h3 className="text-4xl md:text-5xl lg:text-6xl font-medium mb-4 text-white/90 tracking-tight leading-[1.1]">Artist Color Lab</h3>
+                  <h3 className="lens-target text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium mb-4 text-white/90 tracking-tighter leading-[1.05] text-balance">Artist Color Lab</h3>
                   
                   <div className="mt-8 space-y-8">
                     <div>
@@ -123,32 +148,42 @@ export function Projects() {
                   </div>
                 </motion.div>
               </motion.div>
+            </div>
+
 
               {/* Scrolling Visuals Side */}
               <motion.div variants={staggerContainer} className="lg:col-span-7 space-y-8 mt-12 lg:mt-0">
-                <GlowCard variant="project" intensity="high" interactive className="relative aspect-[16/10] w-full p-2">
-                  <div className="relative w-full h-full rounded-xl overflow-hidden">
-                    <Image
-                      src="/images/projects/Artist_Color_Lab.webp"
-                      alt="Artist Color Lab Main Interface"
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 60vw"
-                      className="object-cover opacity-85 hover:opacity-100 transition-opacity duration-700"
-                    />
-                  </div>
-                </GlowCard>
+                <motion.div variants={subtleScale}>
+                  <GlowCard variant="project" intensity="high" interactive className="relative aspect-[16/10] w-full p-2 overflow-hidden group">
+                    <div className="relative w-full h-full rounded-xl overflow-hidden pointer-events-none">
+                      <motion.div style={{ y: yImage1, height: "120%", top: "-10%" }} className="absolute w-full transform-gpu will-change-transform">
+                        <Image
+                          src="/images/projects/Artist_Color_Lab.webp"
+                          alt="Artist Color Lab Main Interface"
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 60vw"
+                          className="object-cover opacity-85 group-hover:opacity-100 transition-opacity duration-700 pointer-events-auto"
+                        />
+                      </motion.div>
+                    </div>
+                  </GlowCard>
+                </motion.div>
 
-                <GlowCard variant="project" intensity="medium" interactive className="relative aspect-[16/10] w-full p-2">
-                  <div className="relative w-full h-full rounded-xl overflow-hidden">
-                    <Image
-                      src="/images/projects/Artist_Color_Lab_Mixer.webp"
-                      alt="Artist Color Lab Mixer Tool"
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 60vw"
-                      className="object-cover opacity-85 hover:opacity-100 transition-opacity duration-700"
-                    />
-                  </div>
-                </GlowCard>
+                <motion.div variants={subtleScale}>
+                  <GlowCard variant="project" intensity="medium" interactive className="relative aspect-[16/10] w-full p-2 overflow-hidden group">
+                    <div className="relative w-full h-full rounded-xl overflow-hidden pointer-events-none">
+                      <motion.div style={{ y: yImage2, height: "130%", top: "-15%" }} className="absolute w-full transform-gpu will-change-transform">
+                        <Image
+                          src="/images/projects/Artist_Color_Lab_Mixer.webp"
+                          alt="Artist Color Lab Mixer Tool"
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 60vw"
+                          className="object-cover opacity-85 group-hover:opacity-100 transition-opacity duration-700 pointer-events-auto"
+                        />
+                      </motion.div>
+                    </div>
+                  </GlowCard>
+                </motion.div>
               </motion.div>
             </div>
           </div>
@@ -159,31 +194,32 @@ export function Projects() {
           {/* 2 & 3. Case Study Gallery */}
           <div className="space-y-16">
             <motion.div variants={fadeUpVariant}>
-              <h3 className="text-3xl font-medium text-white/90 mb-12">Engineering Case Studies</h3>
+              <h3 className="lens-target text-4xl font-medium text-white/90 mb-12 tracking-tight text-balance">Engineering Case Studies</h3>
             </motion.div>
 
             <motion.div variants={staggerContainer} className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
               {caseStudies.map((study) => (
-                <GlowCard 
-                  key={study.id}
-                  variant="project"
-                  interactive
-                  layoutId={`card-container-${study.id}`}
-                  onClick={() => setSelectedId(study.id)}
-                  className="cursor-pointer p-8 md:p-10 flex flex-col h-full group"
-                >
-                  <motion.p layoutId={`card-event-${study.id}`} className="text-[10px] font-mono text-white/30 uppercase tracking-widest mb-5">{study.event}</motion.p>
-                  <motion.h4 layoutId={`card-title-${study.id}`} className="text-2xl md:text-3xl font-medium text-white/90 mb-6 tracking-tight">{study.title}</motion.h4>
-                  
-                  <motion.p layoutId={`card-solution-${study.id}`} className="text-sm text-white/40 font-light tracking-wide leading-relaxed mb-8 line-clamp-3">
-                    {study.solution}
-                  </motion.p>
+                <motion.div key={study.id} variants={fadeUpVariant} className="h-full">
+                  <GlowCard 
+                    variant="project"
+                    interactive
+                    layoutId={`card-container-${study.id}`}
+                    onClick={() => setSelectedId(study.id)}
+                    className="cursor-pointer p-8 md:p-10 flex flex-col h-full group"
+                  >
+                    <motion.p layoutId={`card-event-${study.id}`} className="text-[10px] font-mono text-white/30 uppercase tracking-widest mb-5">{study.event}</motion.p>
+                    <motion.h4 layoutId={`card-title-${study.id}`} className="text-2xl md:text-3xl font-medium text-white/90 mb-6 tracking-tight">{study.title}</motion.h4>
+                    
+                    <motion.p layoutId={`card-solution-${study.id}`} className="text-sm text-white/40 font-light tracking-wide leading-relaxed mb-8 line-clamp-3">
+                      {study.solution}
+                    </motion.p>
 
-                  <div className="mt-auto flex items-center justify-between">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-white/25 group-hover:text-white/50 transition-colors duration-500">Read Case Study</span>
-                    <ExternalLink size={14} className="text-white/20 group-hover:text-white/50 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-500" />
-                  </div>
-                </GlowCard>
+                    <div className="mt-auto flex items-center justify-between">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-white/25 group-hover:text-white/50 transition-colors duration-500">Read Case Study</span>
+                      <ExternalLink size={14} className="text-white/20 group-hover:text-white/50 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-500" />
+                    </div>
+                  </GlowCard>
+                </motion.div>
               ))}
             </motion.div>
           </div>

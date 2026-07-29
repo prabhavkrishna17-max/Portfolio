@@ -160,7 +160,7 @@ export function CardStack({ cards, variant = "landscape" }: CardStackProps) {
                       fill
                       sizes="(max-width: 1200px) 60vw, 40vw"
                       className={`${isDocument ? "object-contain bg-white/[0.02]" : "object-cover"} transition-opacity duration-700 ${offset === 0 ? "opacity-90 group-hover:opacity-100" : "opacity-50"}`}
-                      priority={offset === 0}
+                      priority={offset <= 1}
                     />
                     
                     {/* Caption: only visible on active card */}
@@ -195,6 +195,7 @@ export function CardStack({ cards, variant = "landscape" }: CardStackProps) {
                   fill
                   sizes="80vw"
                   className={`${isDocument ? "object-contain bg-white/[0.02]" : "object-cover"} opacity-90`}
+                  priority={idx <= 1}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex flex-col justify-end p-5 pointer-events-none">
                   <h3 className="text-base font-heading font-medium text-white/90">{card.title}</h3>

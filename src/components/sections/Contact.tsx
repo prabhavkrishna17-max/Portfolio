@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { toast } from "sonner";
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { motion, AnimatePresence, useInView, useScroll, useTransform } from "framer-motion";
 import { GlowCard } from "@/components/ui/GlowCard";
 import ShapeGrid from "@/components/ui/ShapeGrid";
 import { 
@@ -79,6 +78,15 @@ export function Contact() {
   const containerRef = useRef<HTMLElement>(null);
   const isInView = useInView(containerRef, { margin: "200px 0px 200px 0px" });
 
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+  
+  // Subtle ambient parallax for the background grid and noise
+  const yBackground = useTransform(scrollYProgress, [0, 1], ["-15%", "5%"]);
+  const yNoise = useTransform(scrollYProgress, [0, 1], ["-5%", "15%"]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus('loading');
@@ -113,42 +121,42 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" ref={containerRef} className="pt-24 md:pt-32 pb-32 md:pb-48 relative z-10 bg-[#030305] overflow-hidden">
+    <section id="contact" ref={containerRef} className="pt-24 md:pt-32 pb-16 relative z-10 text-white overflow-hidden">
       
-      {/* ========================================================= */}
-      {/* BACKGROUND LAYERS */}
-      {/* ========================================================= */}
+      {/* 1. Ambient Background Layer */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        {/* Layer 1: Base Dark Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#030305] via-[#060609] to-[#030305]" />
         
-        {/* Layer 2: ShapeGrid */}
-        <div className="absolute inset-0 opacity-80 mix-blend-screen pointer-events-auto">
+        {/* Layer 1: ShapeGrid with mask for blending */}
+        <motion.div 
+          style={{ y: yBackground, maskImage: "linear-gradient(to bottom, transparent 0%, black 20%, black 100%)", WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 20%, black 100%)" }} 
+          className="absolute inset-0 opacity-80 mix-blend-screen transform-gpu will-change-transform"
+        >
           <ShapeGrid 
-            speed={0.18} 
+            speed={0.15} 
             squareSize={48} 
             direction="diagonal" 
-            borderColor="rgba(255,255,255,0.06)" 
-            hoverFillColor="rgba(255,255,255,0.04)" 
+            borderColor="rgba(255,255,255,0.04)" 
+            hoverFillColor="rgba(255,255,255,0.03)" 
             shape="square" 
             hoverTrailAmount={0}
             paused={!isInView}
           />
-        </div>
+        </motion.div>
         
-        {/* Layer 3: Radial Vignette */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#030305_90%)]" />
+        {/* Layer 2: Radial Vignette */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(3,3,5,0.6)_90%)]" />
         
-        {/* Layer 4: Noise Texture */}
-        <div 
-          className="absolute inset-0 opacity-[0.02] mix-blend-overlay hidden md:block"
+        {/* Layer 3: Noise Texture with distinct parallax */}
+        <motion.div 
+          className="absolute inset-0 opacity-[0.02] mix-blend-overlay hidden md:block transform-gpu will-change-transform"
           style={{
+            y: yNoise,
             backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
           }}
         />
         
         {/* Blend boundary top gradient */}
-        <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-[#030305] to-transparent" />
+        <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-[#030305]/0 to-transparent" />
       </div>
 
       {/* ========================================================= */}
@@ -162,7 +170,7 @@ export function Contact() {
         className="container mx-auto px-6 md:px-12 lg:px-16 max-w-[1400px] relative z-10"
       >
         <motion.div variants={fadeUpVariant} className="mb-16 md:mb-24 text-center">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6 text-white leading-[1.1]">
+          <h2 className="lens-target text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6 text-white leading-[1.1]">
             Let&apos;s build <span className="text-white/40 italic font-serif font-light">something great.</span>
           </h2>
           <p className="text-lg md:text-xl text-white/50 font-light font-sans max-w-2xl mx-auto leading-relaxed">

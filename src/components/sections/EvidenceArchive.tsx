@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { X, Maximize2 } from "lucide-react";
 import { GlowCard } from "@/components/ui/GlowCard";
-import { CINEMATIC_EASE, fadeUpVariant, sectionVariant, staggerContainer } from "@/lib/animations";
+import ShapeGrid from "@/components/ui/ShapeGrid";
+import { CINEMATIC_EASE, fadeUpVariant, sectionVariant, staggerContainer, subtleScale } from "@/lib/animations";
 import { useLenis } from 'lenis/react';
 
 type ArchiveItem = {
@@ -99,11 +100,11 @@ const archiveItems: ArchiveItem[] = [
 ];
 
 const getSizeClasses = (size: "large" | "medium" | "small", isPortrait?: boolean) => {
-  if (size === "large") return "w-[70vw] md:w-[45vw] lg:w-[40vw] max-w-[800px] aspect-[16/10]";
-  if (size === "medium") return "w-[60vw] md:w-[35vw] lg:w-[30vw] max-w-[600px] aspect-[16/10]";
+  if (size === "large") return "w-[75vw] sm:w-[70vw] md:w-[45vw] lg:w-[40vw] max-w-[800px] aspect-[16/10]";
+  if (size === "medium") return "w-[65vw] sm:w-[60vw] md:w-[35vw] lg:w-[30vw] max-w-[600px] aspect-[16/10]";
   return isPortrait 
-    ? "w-[45vw] md:w-[25vw] lg:w-[20vw] max-w-[400px] aspect-[3/4]"
-    : "w-[55vw] md:w-[30vw] lg:w-[25vw] max-w-[450px] aspect-[16/10]";
+    ? "w-[50vw] sm:w-[45vw] md:w-[25vw] lg:w-[20vw] max-w-[400px] aspect-[3/4]"
+    : "w-[60vw] sm:w-[55vw] md:w-[30vw] lg:w-[25vw] max-w-[450px] aspect-[16/10]";
 };
 
 // Dynamic spacing array based on easing, creating compression at the edges.
@@ -114,13 +115,26 @@ export function EvidenceArchive() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
   const lenis = useLenis();
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+  
+  // Subtle parallax for the entire exhibition container
+  const yGrid = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    const checkResponsive = () => {
+      setIsMobile(window.innerWidth < 768);
+      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1024);
+    };
+    checkResponsive();
+    window.addEventListener('resize', checkResponsive);
+    return () => window.removeEventListener('resize', checkResponsive);
   }, []);
 
   // Scroll lock for cinematic exhibition view
@@ -160,8 +174,23 @@ export function EvidenceArchive() {
   const activeItem = archiveItems[activeIndex];
 
   return (
-    <section id="evidence" className="py-24 md:py-32 relative z-10 bg-[#030305] text-white overflow-hidden">
+    <section id="evidence" ref={sectionRef} className="py-24 md:py-32 relative z-10 text-white overflow-hidden">
       
+      {/* Ambient Museum Background */}
+      <div 
+        className="absolute inset-0 z-0 opacity-[0.02] pointer-events-none transform-gpu will-change-transform"
+        style={{ maskImage: "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)", WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)" }}
+      >
+        <ShapeGrid 
+          shape="triangle" 
+          direction="left" 
+          speed={0.1} 
+          squareSize={80} 
+          borderColor="#ffffff" 
+          hoverFillColor="transparent"
+        />
+      </div>
+
       {/* 1. Introduction */}
       <motion.div
         variants={sectionVariant}
@@ -183,10 +212,16 @@ export function EvidenceArchive() {
       </motion.div>
 
       {/* 2. Curved Exhibition */}
-      <div className="relative w-full h-[60vh] min-h-[500px] flex items-center justify-center [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)] overflow-hidden">
+      <motion.div 
+        variants={subtleScale}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-10%" }}
+        className="relative w-full h-[60vh] min-h-[400px] sm:min-h-[500px] flex items-center justify-center [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)] overflow-hidden transform-gpu"
+      >
         
         {/* Exhibition Container with profound depth */}
-        <div className="relative w-full max-w-[1400px] h-full flex items-center justify-center perspective-[1800px] transform-style-3d">
+        <motion.div style={{ y: yGrid }} className="relative w-full max-w-[1400px] h-full flex items-center justify-center perspective-[1800px] transform-style-3d transform-gpu will-change-transform">
           
           {archiveItems.map((item, index) => {
             const distance = index - activeIndex;
@@ -194,8 +229,8 @@ export function EvidenceArchive() {
             const isCenter = distance === 0;
             
             // Physics Calculations
-            // Scale offsets down on mobile so adjacent cards stay on-screen
-            const mobileScale = isMobile ? 0.45 : 1;
+            // Scale offsets down on mobile/tablet so adjacent cards stay on-screen
+            const mobileScale = isMobile ? 0.35 : (isTablet ? 0.65 : 1);
             const baseOffset = (X_OFFSETS[absDistance] || 1000) * mobileScale;
             // Additional offset for large cards to preserve negative space
             const sizeOffset = isCenter ? 0 : (archiveItems[activeIndex].size === "large" ? (60 * mobileScale) : 0);
@@ -253,9 +288,9 @@ export function EvidenceArchive() {
                   transition: { duration: 0.6, ease: "easeOut" }
                 } : undefined}
                 transition={{
-                  // Apple-level calm, highly damped, prolonged heavy slide
-                  duration: 1.05,
-                  ease: [0.22, 1, 0.36, 1],
+                  // Museum-quality inertia glide, heavily damped, no bouncing
+                  duration: 1.2,
+                  ease: [0.16, 1, 0.3, 1],
                 }}
                 onClick={() => {
                   if (lightboxOpen) return;
@@ -266,11 +301,9 @@ export function EvidenceArchive() {
                   }
                 }}
               >
-                {/* Center Ambient Motion Wrapper */}
+                {/* Center Ambient Motion Wrapper - Removed bouncy motion */}
                 <motion.div 
-                  className="relative flex flex-col items-center"
-                  animate={isCenter && !lightboxOpen ? { y: [-2, 2, -2] } : { y: 0 }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative flex flex-col items-center transform-gpu will-change-transform"
                 >
                   <GlowCard
                     variant="archive"
@@ -278,7 +311,7 @@ export function EvidenceArchive() {
                     active={isCenter && !lightboxOpen}
                     className={`w-full h-full ${getSizeClasses(item.size, item.isPortrait)}`}
                   >
-                    <motion.div layoutId={`exhibit-image-${item.id}`} className="absolute inset-0 w-full h-full">
+                    <motion.div layoutId={`exhibit-image-${item.id}`} className="absolute inset-0 w-full h-full bg-white/[0.02]">
                       <Image
                         src={item.image}
                         alt={item.title}
@@ -286,7 +319,7 @@ export function EvidenceArchive() {
                         className={`object-cover ${item.isPortrait ? "object-contain p-2" : ""}`}
                         sizes="(max-width: 768px) 50vw, 33vw"
                         quality={90}
-                        priority={isCenter}
+                        priority={absDistance <= 1} // Preload active and immediate neighbors to fix hydration flicker
                       />
                     </motion.div>
                   </GlowCard>
@@ -303,9 +336,9 @@ export function EvidenceArchive() {
 
                   {/* Exhibit Label */}
                   <motion.div 
-                    animate={{ opacity: isCenter && !lightboxOpen ? 1 : 0, y: isCenter && !lightboxOpen ? 0 : -10 }}
-                    transition={{ duration: 0.5, delay: 0.1 }}
-                    className="absolute -bottom-16 w-max text-center pointer-events-none"
+                    animate={{ opacity: isCenter && !lightboxOpen ? 1 : 0, y: isCenter && !lightboxOpen ? 0 : -5 }}
+                    transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute -bottom-12 md:-bottom-16 w-max text-center pointer-events-none"
                   >
                     <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/40 mb-1">{item.type}</p>
                     <h3 className="text-sm md:text-base font-medium tracking-wide text-white/90">{item.title}</h3>
@@ -313,8 +346,8 @@ export function EvidenceArchive() {
                 </motion.div>
             );
           })}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* 3. Cinematic Lightbox */}
       <AnimatePresence>
@@ -355,7 +388,7 @@ export function EvidenceArchive() {
                 fill
                 sizes="100vw"
                 className="object-contain"
-                priority
+                priority={true}
                 quality={100}
               />
             </motion.div>

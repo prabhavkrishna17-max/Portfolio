@@ -64,43 +64,57 @@ export function GlowCard({
       layoutId={layoutId}
       onClick={onClick}
       onMouseMove={handleMouseMove}
-      className={`relative rounded-xl overflow-hidden ${glassClasses} glow-variant-${variant} ${className}`}
-      style={style}
+      className={`relative rounded-xl overflow-hidden ${glassClasses} glow-variant-${variant} ${className} transform-gpu`}
+      style={{ ...style, willChange: "transform, box-shadow" }}
       whileHover={interactive && !active ? "hover" : undefined}
+      whileTap={interactive ? "tap" : undefined}
       initial="idle"
       animate={active ? "active" : "idle"}
       variants={{
         idle: {
           y: 0,
+          scale: 1,
           boxShadow: `
-            inset 0 1px 1px rgba(255,255,255,0.12),
-            inset 0 -1px 1px rgba(0,0,0,0.5),
-            inset 0 0 0 1px rgba(255,255,255,0.04),
-            0 8px 32px 0 rgba(0,0,0,0.3)
+            inset 0 1px 1px rgba(255,255,255,0.08),
+            inset 0 -1px 1px rgba(0,0,0,0.3),
+            inset 0 0 0 1px rgba(255,255,255,0.02),
+            0 8px 32px 0 rgba(0,0,0,0.2)
           `,
         },
         hover: {
           y: -2,
+          scale: 1,
           boxShadow: `
-            inset 0 1px 1px rgba(255,255,255,0.2),
-            inset 0 -1px 1px rgba(0,0,0,0.6),
-            inset 0 0 0 1px rgba(255,255,255,0.08),
-            0 24px 64px 0 rgba(0,0,0,0.5),
-            0 0 40px rgba(255,255,255,0.03)
+            inset 0 1px 1px rgba(255,255,255,0.15),
+            inset 0 -1px 1px rgba(0,0,0,0.4),
+            inset 0 0 0 1px rgba(255,255,255,0.06),
+            0 24px 64px 0 rgba(0,0,0,0.4),
+            0 0 40px rgba(255,255,255,0.02)
           `,
         },
         active: {
           y: 0,
+          scale: 1,
           boxShadow: `
-            inset 0 1px 1px rgba(255,255,255,0.2),
-            inset 0 -1px 1px rgba(0,0,0,0.6),
-            inset 0 0 0 1px rgba(255,255,255,0.1),
-            0 24px 64px 0 rgba(0,0,0,0.6),
-            0 0 60px rgba(255,255,255,0.05)
+            inset 0 1px 1px rgba(255,255,255,0.15),
+            inset 0 -1px 1px rgba(0,0,0,0.4),
+            inset 0 0 0 1px rgba(255,255,255,0.08),
+            0 24px 64px 0 rgba(0,0,0,0.5),
+            0 0 60px rgba(255,255,255,0.04)
+          `,
+        },
+        tap: {
+          y: 0,
+          scale: 0.98,
+          boxShadow: `
+            inset 0 1px 1px rgba(255,255,255,0.05),
+            inset 0 -1px 1px rgba(0,0,0,0.2),
+            inset 0 0 0 1px rgba(255,255,255,0.02),
+            0 4px 16px 0 rgba(0,0,0,0.2)
           `,
         }
       }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
     >
       {/* 1. Dynamic Cursor Border Glow (XOR Masked) - The traveling light */}
       <motion.div

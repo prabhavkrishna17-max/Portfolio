@@ -1,15 +1,42 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { GlowCard } from "@/components/ui/GlowCard";
+import ShapeGrid from "@/components/ui/ShapeGrid";
 import { fadeUpVariant, staggerContainer, sectionVariant } from "@/lib/animations";
 
 export function About() {
+  const containerRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+  
+  // Subtle parallax for the factual cards to create restrained depth
+  const yParallax = useTransform(scrollYProgress, [0, 1], [40, -40]);
+  const yTextParallax = useTransform(scrollYProgress, [0, 1], [-20, 20]);
+
   return (
-    <section id="about" className="pt-16 md:pt-24 pb-24 md:pb-32 relative z-10 bg-[#030305] text-white overflow-hidden">
+    <section id="about" ref={containerRef} className="pt-16 md:pt-24 pb-24 md:pb-32 relative z-10 text-white overflow-hidden">
       
       {/* Blend boundary top gradient */}
-      <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-transparent to-[#030305] z-0 pointer-events-none" />
+      <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-[#030305]/0 to-transparent z-0 pointer-events-none" />
+
+      {/* Ambient Geometric Background */}
+      <div 
+        className="absolute inset-0 z-0 opacity-[0.02] pointer-events-none transform-gpu will-change-transform"
+        style={{ maskImage: "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)", WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)" }}
+      >
+        <ShapeGrid 
+          shape="hexagon" 
+          direction="diagonal" 
+          speed={0.2} 
+          squareSize={50} 
+          borderColor="#ffffff" 
+          hoverFillColor="transparent"
+        />
+      </div>
 
       <motion.div 
         variants={sectionVariant}
@@ -27,13 +54,14 @@ export function About() {
           
           {/* Main Narrative */}
           <motion.div
+            style={{ y: yTextParallax }}
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-15%" }}
-            className="lg:col-span-7 flex flex-col gap-8"
+            className="lg:col-span-7 flex flex-col gap-8 transform-gpu will-change-transform"
           >
-            <motion.h3 variants={fadeUpVariant} className="text-2xl md:text-3xl lg:text-4xl font-medium tracking-tight leading-[1.3] text-white/90">
+            <motion.h3 variants={fadeUpVariant} className="lens-target text-2xl md:text-4xl lg:text-5xl font-medium tracking-tight leading-[1.1] text-white/90 text-balance">
               I am a curious developer and Computer Science student learning to build useful software.
             </motion.h3>
             
@@ -50,17 +78,17 @@ export function About() {
             </motion.div>
           </motion.div>
 
-          {/* Factual Information */}
           <motion.div
+            style={{ y: yParallax }}
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-15%" }}
-            className="lg:col-span-5 space-y-6"
+            className="lg:col-span-5 space-y-6 transform-gpu will-change-transform"
           >
             {/* Education — College */}
             <motion.div variants={fadeUpVariant}>
-              <GlowCard variant="default" intensity="low" interactive className="p-8">
+              <GlowCard variant="default" intensity="low" interactive className="p-5 sm:p-8">
                 <h4 className="text-[10px] md:text-xs font-mono text-white/40 uppercase tracking-[0.1em] mb-4">University</h4>
                 <div className="space-y-1 font-sans text-white/70 text-sm md:text-base">
                   <p className="font-medium text-white/90">B.E Computer Science & Engineering</p>
@@ -72,7 +100,7 @@ export function About() {
 
             {/* Education — School */}
             <motion.div variants={fadeUpVariant}>
-              <GlowCard variant="default" intensity="low" interactive className="p-8">
+              <GlowCard variant="default" intensity="low" interactive className="p-5 sm:p-8">
                 <h4 className="text-[10px] md:text-xs font-mono text-white/40 uppercase tracking-[0.1em] mb-4">School</h4>
                 <div className="space-y-3 font-sans text-white/70 text-sm md:text-base">
                   <p>Vidya Vikasini Matric Higher Secondary School</p>
@@ -81,7 +109,7 @@ export function About() {
             </motion.div>
 
             <motion.div variants={fadeUpVariant}>
-              <GlowCard variant="default" intensity="low" interactive className="p-8">
+              <GlowCard variant="default" intensity="low" interactive className="p-5 sm:p-8">
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
                   {/* Core Stack */}
                   <div>

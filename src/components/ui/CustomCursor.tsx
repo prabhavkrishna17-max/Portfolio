@@ -38,8 +38,8 @@ export function CustomCursor() {
         const isClickable = !!target.closest('a, button, input, textarea');
         setIsHovering(isClickable);
 
-        // Check if it's a typography element
-        const isText = !!target.closest('h1, h2, h3, h4, h5, h6, p, span, li, label, strong, em, blockquote, dt, dd');
+        // EXPLICIT ALLOW-LIST: Only activate optical inversion on elements with the .lens-target class
+        const isText = !!target.closest('.lens-target');
         
         // Show lens if hovering text, but standard clickable cursor takes precedence if it's a link/button
         setIsHoveringText(isText && !isClickable);

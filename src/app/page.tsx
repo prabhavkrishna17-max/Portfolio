@@ -6,12 +6,14 @@ import { Skills } from "@/components/sections/Skills";
 import { Projects } from "@/components/sections/Projects";
 import { EvidenceArchive } from "@/components/sections/EvidenceArchive";
 import { Contact } from "@/components/sections/Contact";
+import { GlobalLighting } from "@/components/ui/GlobalLighting";
 
 export default function Home() {
   return (
     <>
+      <GlobalLighting />
       <Navbar />
-      <main className="flex min-h-screen flex-col overflow-hidden">
+      <main className="flex min-h-screen flex-col overflow-hidden relative z-10">
         <Hero />
         <About />
         <Skills />

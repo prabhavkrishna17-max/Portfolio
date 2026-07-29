@@ -1,6 +1,8 @@
 "use client";
 
 import { ArrowUp } from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeUpVariant, staggerContainer } from "@/lib/animations";
 
 export function Footer() {
   const scrollToTop = () => {
@@ -8,23 +10,35 @@ export function Footer() {
   };
 
   return (
-    <footer className="relative border-t border-white/5 py-12 overflow-hidden">
-      {/* Background Glow */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg h-32 bg-accent/20 blur-[100px] rounded-full pointer-events-none" />
+    <footer className="relative border-t border-white/5 py-12 overflow-hidden text-white">
+      {/* Ambient Pulsating Light Leak */}
+      <motion.div 
+        animate={{ opacity: [0.4, 0.8, 0.4], scale: [0.95, 1.05, 0.95] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-48 bg-[radial-gradient(ellipse_at_bottom,rgba(255,255,255,0.04),transparent_60%)] blur-[80px] rounded-full pointer-events-none transform-gpu will-change-transform" 
+      />
 
-      <div className="container mx-auto px-4 md:px-6 relative z-10 flex flex-col md:flex-row items-center justify-between">
-        <div className="flex items-center space-x-2 mb-4 md:mb-0">
-          <span className="text-xl font-heading font-bold tracking-tighter">
-            P<span className="text-accent">.</span>K
-          </span>
-          <span className="text-muted/50 text-sm">|</span>
+      <motion.div 
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="container mx-auto px-4 md:px-6 relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-0"
+      >
+        <motion.div variants={fadeUpVariant} className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-2 text-center md:text-left">
+          <div className="flex items-center space-x-2">
+            <span className="text-xl font-heading font-bold tracking-tighter">
+              P<span className="text-accent">.</span>K
+            </span>
+            <span className="text-muted/50 text-sm hidden md:inline">|</span>
+          </div>
           <p className="text-white/70 text-sm">
             Designed and Developed by{" "}
-            <span className="text-foreground font-medium">Prabhav Krishna R</span>
+            <span className="text-foreground font-medium block sm:inline">Prabhav Krishna R</span>
           </p>
-        </div>
+        </motion.div>
 
-        <div className="flex items-center space-x-6">
+        <motion.div variants={fadeUpVariant} className="flex items-center space-x-6">
           <p className="text-white/70 text-sm">&copy; {new Date().getFullYear()} All rights reserved.</p>
           <a
             href="https://github.com/prabhavkrishna17-max"
@@ -42,8 +56,8 @@ export function Footer() {
           >
             <ArrowUp size={18} className="group-hover:-translate-y-1 transition-transform" />
           </button>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </footer>
   );
 }

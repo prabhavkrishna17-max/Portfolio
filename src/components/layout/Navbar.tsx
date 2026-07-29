@@ -38,6 +38,20 @@ export function Navbar() {
   });
 
   useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+      if (lenis) lenis.stop();
+    } else {
+      document.body.style.overflow = "";
+      if (lenis) lenis.start();
+    }
+    return () => {
+      document.body.style.overflow = "";
+      if (lenis) lenis.start();
+    };
+  }, [mobileMenuOpen, lenis]);
+
+  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -136,28 +150,52 @@ export function Navbar() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="absolute top-full left-4 right-4 mt-2 md:hidden pointer-events-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="fixed inset-0 z-[-1] bg-[#030305]/98 backdrop-blur-2xl md:hidden pointer-events-auto flex flex-col pt-28 pb-10 px-6 h-[100dvh]"
           >
-            <div className="glass-elevated flex flex-col p-3 rounded-2xl">
-              {navLinks.map((link) => (
-                <a
+            <div className="flex flex-col gap-2">
+              {navLinks.map((link, i) => (
+                <motion.a
                   key={link.name}
                   href={link.href}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20, transition: { delay: 0 } }}
+                  transition={{ delay: i * 0.1, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
                   onClick={(e) => {
                     e.preventDefault();
                     setMobileMenuOpen(false);
                     if (lenis) lenis.scrollTo(link.href);
                   }}
-                  className="px-4 py-3 rounded-xl text-sm text-foreground hover:bg-white/[0.04] transition-colors"
+                  className="px-4 py-4 text-3xl font-medium tracking-tight text-white/90 hover:text-white transition-colors"
                 >
                   {link.name}
-                </a>
+                </motion.a>
               ))}
             </div>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20, transition: { delay: 0 } }}
+              transition={{ delay: navLinks.length * 0.1, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="mt-auto pt-8 w-full"
+            >
+              <a
+                href="#contact"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMobileMenuOpen(false);
+                  if (lenis) lenis.scrollTo('#contact');
+                }}
+                className="w-full px-6 py-4 rounded-full text-base font-medium border border-white/20 bg-white/5 text-white flex items-center justify-center hover:bg-white/10 transition-colors shadow-sm"
+              >
+                Let&apos;s Talk
+              </a>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

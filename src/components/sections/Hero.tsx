@@ -30,6 +30,8 @@ export function Hero() {
   
   // Parallax for text to give subtle depth against the background
   const textScrollY = useTransform(smoothScroll, [0, 1000], [0, -150]);
+  const videoScrollY = useTransform(smoothScroll, [0, 1000], [0, 60]);
+  const bgScrollY = useTransform(smoothScroll, [0, 1000], [0, 120]);
   const opacityFade = useTransform(smoothScroll, [0, 600], [1, 0]);
 
   // Removed global handleMouseMove since lens is localized
@@ -38,26 +40,39 @@ export function Hero() {
     <section
       ref={sectionRef}
       id="top"
-      className="relative h-[100dvh] overflow-hidden bg-[#030305] flex items-center justify-center"
+      className="relative h-[100dvh] overflow-hidden flex items-center justify-center"
     >
       {/* 1. ATMOSPHERE / LIGHTING (Base Layer) */}
       <motion.div 
+        style={{ y: bgScrollY, maskImage: "linear-gradient(to bottom, black 70%, transparent 100%)", WebkitMaskImage: "linear-gradient(to bottom, black 70%, transparent 100%)" }}
         initial={{ opacity: 0 }}
-        animate={{ opacity: isLoaded ? 0.4 : 0 }}
+        animate={{ opacity: isLoaded ? 0.3 : 0 }}
         transition={{ duration: 4, ease: "easeInOut" }}
-        className="absolute inset-0 z-0 pointer-events-none"
+        className="absolute inset-[-20%] w-[140%] h-[140%] z-0 pointer-events-none transform-gpu will-change-transform"
       >
         {/* Soft atmospheric gradients providing subtle volumetric light */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(255,255,255,0.03),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(167,139,250,0.04),transparent_50%)]" />
+        <motion.div 
+          animate={{ x: ["0%", "-3%", "0%"], y: ["0%", "3%", "0%"] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(255,255,255,0.04),transparent_50%)]" 
+        />
+        <motion.div 
+          animate={{ x: ["0%", "3%", "0%"], y: ["0%", "-3%", "0%"] }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(167,139,250,0.04),transparent_50%)]" 
+        />
       </motion.div>
+
+      {/* Mobile Background Fallback */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#0a0a12] via-[#030305] to-[#08080f] lg:hidden" />
 
       {/* 2. CINEMATIC VIDEO */}
       <motion.div 
+        style={{ y: videoScrollY }}
         initial={{ opacity: 0, filter: "blur(10px)" }}
         animate={{ opacity: isLoaded ? 1 : 0, filter: isLoaded ? "blur(0px)" : "blur(10px)" }}
         transition={{ duration: 3, delay: 0.5, ease: CINEMATIC_EASE }}
-        className="absolute top-0 right-0 h-full w-full lg:w-[65%] xl:w-[60%] z-0 hidden motion-safe:block transform-gpu"
+        className="absolute top-0 right-0 h-full w-full lg:w-[65%] xl:w-[60%] z-0 hidden lg:block transform-gpu group"
         style={{
           // Softer, wider feathering to blend the vertical split organically
           maskImage: "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.02) 10%, black 50%, black 100%)",
@@ -66,13 +81,22 @@ export function Hero() {
           transform: "translateZ(0)",
         }}
       >
+        {/* Ambient Light Spill */}
+        <div className="absolute inset-0 z-0 bg-white/5 blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-[1500ms] ease-out pointer-events-none transform-gpu" />
+
+        {/* Premium Edge Bloom */}
+        <div className="absolute inset-0 z-20 bg-[radial-gradient(ellipse_at_70%_40%,rgba(255,255,255,0.08),transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-[1500ms] ease-out mix-blend-screen pointer-events-none" />
+        
+        {/* Soft Glass Reflection */}
+        <div className="absolute inset-0 z-20 bg-gradient-to-tr from-transparent via-white/[0.04] to-transparent translate-x-[-150%] group-hover:translate-x-[150%] transition-transform duration-[2500ms] ease-in-out pointer-events-none mix-blend-overlay" />
+
         <video
           autoPlay
           loop
           muted
           playsInline
           style={{ objectPosition: "72% 22%" }}
-          className="w-full h-full object-cover brightness-[0.7] contrast-[1.15] saturate-[0.8] sepia-[0.1] opacity-90"
+          className="w-full h-full object-cover brightness-[0.7] contrast-[1.15] saturate-[0.8] sepia-[0.1] opacity-90 group-hover:brightness-[0.8] group-hover:contrast-[1.25] group-hover:saturate-[0.85] transition-all duration-[1500ms] ease-out relative z-10"
         >
           <source src="/images/hero/Me-Video.mp4" type="video/mp4" />
         </video>
@@ -80,9 +104,17 @@ export function Hero() {
 
 
 
-      {/* 4. VIGNETTE & BLENDING (Top layer over video+glow to ground the scene) */}
+      {/* 4. VIGNETTE, BLENDING & ATMOSPHERIC DUST (Foreground depth) */}
       <div className="absolute inset-0 z-[10] pointer-events-none bg-gradient-to-r from-[#030305] via-[#030305]/95 to-transparent w-full lg:w-[85%]" />
       <div className="absolute inset-0 z-[10] pointer-events-none bg-[radial-gradient(circle_at_center,transparent_30%,rgba(3,3,5,0.6)_80%,#030305_100%)]" />
+      
+      <motion.div 
+        style={{ y: textScrollY }}
+        className="absolute inset-0 z-[12] pointer-events-none opacity-[0.03] mix-blend-overlay transform-gpu will-change-transform hidden md:block"
+        animate={{ backgroundPosition: ["0px 0px", "0px 100px"] }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        backgroundImage={`url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`}
+      />
       
       {/* Fallback overlay for reduced motion */}
       <div className="absolute inset-0 z-[10] pointer-events-none bg-[#050505]/80 motion-reduce:bg-[#050505] motion-safe:hidden" />
@@ -117,8 +149,8 @@ export function Hero() {
             transition={{ duration: 2.5, delay: 1.5, ease: CINEMATIC_EASE }}
             className="mb-8 md:mb-10 relative group inline-block"
           >
-            <h1 className="text-[11vw] sm:text-[8vw] md:text-[6.5vw] lg:text-[5vw] leading-[1.1] tracking-[-0.02em] font-medium text-white/90 drop-shadow-2xl relative z-10 selection:bg-white/20">
-              Creating <span className="font-serif italic text-white/70 font-light pr-2">Intelligent</span><br />
+            <h1 className="lens-target text-[11vw] sm:text-[8vw] md:text-[6.5vw] lg:text-[5vw] leading-[1.05] tracking-tight font-medium text-white/90 drop-shadow-2xl relative z-10 selection:bg-white/20 text-balance">
+              Creating <span className="font-serif italic text-white/70 font-light pr-2 tracking-normal">Intelligent</span><br />
               Web Experiences
             </h1>
           </motion.div>
@@ -133,38 +165,40 @@ export function Hero() {
             Computer Science student building thoughtful digital experiences with AI-assisted development and modern web technologies.
           </motion.p>
 
-          {/* CTA Buttons (Quietly inviting, avoiding heavy UI blocks) */}
+          {/* CTA Buttons (Premium, cohesive hierarchy) */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: isLoaded ? 1 : 0 }}
             transition={{ duration: 2, delay: 4, ease: CINEMATIC_EASE }}
-            className="flex flex-col sm:flex-row items-center gap-6 justify-center md:justify-start w-full sm:w-auto opacity-80 hover:opacity-100 transition-opacity duration-500"
+            className="flex flex-col sm:flex-row items-center gap-5 sm:gap-4 mt-2 justify-center md:justify-start w-full sm:w-auto opacity-90 hover:opacity-100 transition-opacity duration-500"
           >
+            {/* Primary CTA: Resume */}
             <button
               onClick={() => setShowResume(true)}
-              className="group flex items-center gap-2 text-xs sm:text-sm font-mono tracking-[0.1em] text-white/70 hover:text-white uppercase transition-colors duration-300"
+              className="group relative flex items-center justify-center gap-3 px-8 py-3.5 rounded-full border border-white/[0.08] bg-white/[0.03] backdrop-blur-xl overflow-hidden hover:bg-white/[0.08] hover:border-white/[0.2] transition-all duration-500 w-full sm:w-auto hover:shadow-[0_0_30px_-5px_rgba(255,255,255,0.1)] hover:-translate-y-[1px]"
             >
-              Resume
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.05] to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+              <span className="relative z-10 text-[11px] sm:text-xs font-mono tracking-[0.15em] text-white/90 uppercase mt-0.5">View Resume</span>
             </button>
 
-            {/* Premium LeetCode Glass CTA */}
+            {/* Secondary CTA: LeetCode */}
             <a
               href="https://leetcode.com/u/Prabhav_Krishna/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center justify-center gap-3 px-6 py-3 rounded-2xl border border-white/[0.05] bg-white/[0.02] backdrop-blur-md hover:bg-white/[0.05] hover:border-white/[0.15] hover:-translate-y-[2px] transition-all duration-500 shadow-xl w-full sm:w-auto"
+              className="group flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full border border-transparent hover:bg-white/[0.03] transition-all duration-500 w-full sm:w-auto"
             >
-              <LeetCodeLogo className="w-4 h-4 group-hover:rotate-[4deg] transition-transform duration-500" />
-              <span className="text-xs font-mono tracking-[0.1em] text-white/90 uppercase mt-0.5">LeetCode</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-white/40 group-hover:text-white group-hover:translate-x-[2px] group-hover:-translate-y-[2px] transition-all duration-500" />
+              <LeetCodeLogo className="w-4 h-4 group-hover:rotate-[8deg] group-hover:scale-110 transition-transform duration-500" />
+              <span className="text-[11px] sm:text-xs font-mono tracking-[0.15em] text-white/60 group-hover:text-white/90 uppercase mt-0.5 transition-colors duration-500">LeetCode</span>
             </a>
 
+            {/* Tertiary Link: Let's Connect */}
             <a
               href="#connect"
-              className="group flex items-center gap-2 text-xs sm:text-sm font-mono tracking-[0.1em] text-white/70 hover:text-white uppercase transition-colors duration-300"
+              className="group flex items-center justify-center gap-3 px-4 py-3 sm:ml-4 text-[11px] sm:text-xs font-mono tracking-[0.15em] text-white/50 hover:text-white uppercase transition-colors duration-500 w-full sm:w-auto"
             >
-              <span className="w-8 h-[1px] bg-white/30 group-hover:bg-white/70 group-hover:w-12 transition-all duration-500" />
-              Let&apos;s Connect
+              <span className="w-6 h-[1px] bg-white/30 group-hover:bg-white/80 group-hover:w-10 transition-all duration-500" />
+              <span>Let&apos;s Connect</span>
             </a>
           </motion.div>
         </motion.div>

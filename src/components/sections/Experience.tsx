@@ -6,7 +6,7 @@ import { fadeUpVariant, staggerContainer, sectionVariant, subtleScale } from "@/
 
 export function Experience() {
   return (
-    <section id="experience" className="py-24 md:py-32 relative z-10 bg-[#030305] text-white overflow-hidden">
+    <section id="experience" className="py-24 md:py-32 relative z-10 text-white overflow-hidden">
       <motion.div
         variants={sectionVariant}
         initial="hidden"
@@ -34,7 +34,7 @@ export function Experience() {
                 <span>Sep 2024 – Nov 2024</span>
               </motion.p>
               
-              <motion.h3 variants={fadeUpVariant} className="text-2xl md:text-4xl font-medium text-white/90 mb-2 leading-[1.2]">
+              <motion.h3 variants={fadeUpVariant} className="lens-target text-3xl md:text-5xl font-medium text-white/90 mb-3 leading-[1.1] tracking-tight text-balance">
                 Software Developer Intern
               </motion.h3>
               
