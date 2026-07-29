@@ -68,17 +68,16 @@ export function Hero() {
 
       {/* 2. CINEMATIC VIDEO */}
       <motion.div 
-        style={{ y: videoScrollY }}
         initial={{ opacity: 0, filter: "blur(10px)" }}
         animate={{ opacity: isLoaded ? 1 : 0, filter: isLoaded ? "blur(0px)" : "blur(10px)" }}
         transition={{ duration: 3, delay: 0.5, ease: CINEMATIC_EASE }}
         className="absolute top-0 right-0 h-full w-full lg:w-[65%] xl:w-[60%] z-0 hidden lg:block transform-gpu group"
         style={{
+          y: videoScrollY,
           // Softer, wider feathering to blend the vertical split organically
           maskImage: "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.02) 10%, black 50%, black 100%)",
           WebkitMaskImage: "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.02) 10%, black 50%, black 100%)",
-          willChange: "filter, opacity",
-          transform: "translateZ(0)",
+          willChange: "filter, opacity, transform",
         }}
       >
         {/* Ambient Light Spill */}
